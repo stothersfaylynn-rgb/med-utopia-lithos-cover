@@ -46,17 +46,6 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeWork = galleryWorks[activeIndex];
 
-  const scrollToWork = (index: number) => {
-    const viewportHeight =
-      typeof window === 'undefined' || window.innerHeight === 0 ? 900 : window.innerHeight;
-    if (!canUseNativeScroll()) return;
-
-    window.scrollTo({
-      top: index * viewportHeight * 0.92,
-      behavior: 'smooth',
-    });
-  };
-
   const stageStyle = useMemo(() => {
     const viewportWidth =
       typeof window === 'undefined' || window.innerWidth === 0 ? 1440 : window.innerWidth;
@@ -66,9 +55,8 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
     const y = cursorPos.y < 0 ? 0 : (cursorPos.y / viewportHeight - 0.5) * -14;
     const panX = cursorPos.x < 0 ? 0 : (cursorPos.x / viewportWidth - 0.5) * 34;
     const panY = cursorPos.y < 0 ? 0 : (cursorPos.y / viewportHeight - 0.5) * 28;
-    const isFinalWork = activeIndex === galleryWorks.length - 1;
-    const spiralCurrentX = isFinalWork ? 0 : 6 - activeIndex * 4.8;
-    const spiralCurrentY = isFinalWork ? 0 : 4 - activeIndex * 4.2;
+    const spiralCurrentX = 0;
+    const spiralCurrentY = 0;
 
     return {
       '--tilt-x': `${y.toFixed(2)}deg`,
@@ -132,17 +120,6 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
     window.addEventListener('scroll', updateFromScroll, { passive: true });
     updateFromScroll();
     return () => window.removeEventListener('scroll', updateFromScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      if (Math.abs(event.deltaY) < 12) return;
-
-      setActiveIndex((current) => clampIndex(current + (event.deltaY > 0 ? 1 : -1)));
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    return () => window.removeEventListener('wheel', handleWheel);
   }, []);
 
   return (
@@ -222,31 +199,28 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
               );
             })}
           </div>
-        </section>
 
-        <aside className="assistant-panel fixed bottom-8 left-5 z-[120] sm:bottom-10 sm:left-8">
-          <p className="assistant-question">你想进入哪个现场?</p>
-          <div className="mt-4 flex flex-col items-start gap-2">
-            {galleryWorks.map((work, index) => (
-              <button
-                className={`assistant-link ${index === activeIndex ? 'is-active' : ''}`}
-                key={work.category}
-                type="button"
-                onClick={() => {
-                  setActiveIndex(index);
-                  scrollToWork(index);
-                }}
-                onMouseEnter={() => setActiveIndex(index)}
-              >
-                -&gt; {work.category}
-              </button>
-            ))}
+          <div className="dossier-layer" aria-label={`${activeWork.category}补充信息`}>
+            <aside className="work-dossier left-dossier">
+              <span>{activeWork.leftDossier.label}</span>
+              <h2>{activeWork.leftDossier.title}</h2>
+              <ul>
+                {activeWork.leftDossier.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </aside>
+            <aside className="work-dossier right-dossier">
+              <span>{activeWork.rightDossier.label}</span>
+              <h2>{activeWork.rightDossier.title}</h2>
+              <ul>
+                {activeWork.rightDossier.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </aside>
           </div>
-          <label className="assistant-input mt-5 block">
-            <span className="sr-only">输入科室、病种或问题</span>
-            <input placeholder="输入科室 / 病种 / 问题..." type="text" />
-          </label>
-        </aside>
+        </section>
 
         <div className="scroll-rail pointer-events-none fixed right-4 top-1/2 z-[120] -translate-y-1/2">
           <span />

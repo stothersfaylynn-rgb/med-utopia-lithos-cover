@@ -18,6 +18,10 @@ describe('Med-Utopia cover', () => {
     vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1));
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
     window.history.pushState(null, '', '/');
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 0,
+    });
     container = document.createElement('div');
     document.body.appendChild(container);
     root = createRoot(container);
@@ -36,6 +40,16 @@ describe('Med-Utopia cover', () => {
     window.history.pushState(null, '', path);
     act(() => {
       root.render(<App />);
+    });
+  };
+
+  const scrollToWorkIndex = (index: number) => {
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: index * (window.innerHeight || 900) * 0.92,
+    });
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
     });
   };
 
@@ -76,13 +90,17 @@ describe('Med-Utopia cover', () => {
     expect(container.textContent).toContain('案例库');
     expect(container.textContent).toContain('学术挑战');
     expect(container.textContent).toContain('申请内测');
-    expect(container.textContent).toContain('你想进入哪个现场?');
-    expect(container.textContent).toContain('-> 避雷案例');
-    expect(container.textContent).toContain('-> 专家点评');
-    expect(container.textContent).toContain('-> 美学引擎');
+    expect(container.textContent).not.toContain('你想进入哪个现场?');
+    expect(container.textContent).not.toContain('-> 避雷案例');
+    expect(container.querySelector('.assistant-panel')).toBeNull();
+    expect(container.querySelector('input')).toBeNull();
     expect(container.textContent).toContain('避雷案例档案');
     expect(container.textContent).toContain('CASE 01 / 专家复盘现场');
-    expect(container.querySelector('input')?.getAttribute('placeholder')).toBe('输入科室 / 病种 / 问题...');
+    expect(container.textContent).toContain('误判现场');
+    expect(container.textContent).toContain('专家复盘');
+    expect(container.querySelectorAll('.work-dossier')).toHaveLength(2);
+    expect(container.querySelector('.work-dossier.left-dossier')).not.toBeNull();
+    expect(container.querySelector('.work-dossier.right-dossier')).not.toBeNull();
     expect(container.querySelector('[data-theme="dark"]')).not.toBeNull();
     expect(container.querySelectorAll('.work-slab')).toHaveLength(5);
     expect(container.querySelector('[data-page="work"]')).not.toBeNull();
@@ -95,36 +113,32 @@ describe('Med-Utopia cover', () => {
   it('moves downward through the long page with the mouse wheel', () => {
     renderApp('/work');
 
-    act(() => {
-      window.dispatchEvent(new WheelEvent('wheel', { deltaY: 120 }));
-    });
+    scrollToWorkIndex(1);
 
     expect(container.querySelector('[data-active-category="专家点评"]')).not.toBeNull();
     expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--vertical-progress: 1');
   });
 
-  it('does not loop from the last module back to the first module', () => {
+  it('keeps wheel input tied to native scroll position instead of jumping modules directly', () => {
     renderApp('/work');
-
-    const engineButton = Array.from(container.querySelectorAll('button')).find((button) =>
-      button.textContent?.includes('-> 美学引擎'),
-    );
-    expect(engineButton).not.toBeUndefined();
-
-    act(() => {
-      engineButton?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-    });
 
     act(() => {
       window.dispatchEvent(new WheelEvent('wheel', { deltaY: 120 }));
     });
 
+    expect(container.querySelector('[data-active-category="避雷案例"]')).not.toBeNull();
+    expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--vertical-progress: 0');
+  });
+
+  it('does not loop from the last module back to the first module', () => {
+    renderApp('/work');
+
+    scrollToWorkIndex(4);
+
     expect(container.querySelector('[data-active-category="美学引擎"]')).not.toBeNull();
     expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--vertical-progress: 4');
 
-    act(() => {
-      window.dispatchEvent(new WheelEvent('wheel', { deltaY: -120 }));
-    });
+    scrollToWorkIndex(3);
 
     expect(container.querySelector('[data-active-category="专家策展"]')).not.toBeNull();
     expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--vertical-progress: 3');
@@ -133,14 +147,7 @@ describe('Med-Utopia cover', () => {
   it('centers the final module instead of drifting past the viewport corner', () => {
     renderApp('/work');
 
-    const engineButton = Array.from(container.querySelectorAll('button')).find((button) =>
-      button.textContent?.includes('-> 美学引擎'),
-    );
-    expect(engineButton).not.toBeUndefined();
-
-    act(() => {
-      engineButton?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-    });
+    scrollToWorkIndex(4);
 
     const stageStyle = container.querySelector('.gallery-stage')?.getAttribute('style');
 
@@ -148,24 +155,23 @@ describe('Med-Utopia cover', () => {
     expect(stageStyle).toContain('--vertical-progress: 4');
     expect(stageStyle).toContain('--spiral-current-x: 0vw');
     expect(stageStyle).toContain('--spiral-current-y: 0vh');
+    expect(container.textContent).toContain('医学表达重构');
+    expect(container.textContent).toContain('不开放上传');
   });
 
-  it('updates the scene when hovering an assistant category', () => {
+  it('updates the scene when scrolling between work modules', () => {
     renderApp('/work');
 
-    const challengeButton = Array.from(container.querySelectorAll('button')).find((button) =>
-      button.textContent?.includes('-> 学术挑战'),
-    );
-    expect(challengeButton).not.toBeUndefined();
-
-    act(() => {
-      challengeButton?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-    });
+    scrollToWorkIndex(2);
 
     expect(container.textContent).toContain('学术挑战场');
     expect(container.textContent).toContain('CASE 03 / 推理任务');
+    expect(container.textContent).toContain('文献解读');
+    expect(container.textContent).toContain('参与申请');
     expect(container.querySelector('[data-active-category="学术挑战"]')).not.toBeNull();
     expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--vertical-progress: 2');
+    expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--spiral-current-x: 0vw');
+    expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--spiral-current-y: 0vh');
   });
 
   it('applies mouse movement to the whole scene stage, not only individual modules', () => {
