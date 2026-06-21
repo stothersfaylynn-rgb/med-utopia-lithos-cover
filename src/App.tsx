@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ProductShell } from './components/ProductShell';
 import { HomePage } from './HomePage';
+import { CasesPage } from './pages/CasesPage';
 import { ProductGallery } from './ProductGallery';
 import { navigate, parseRoute, type AppRoute } from './router';
 
@@ -9,9 +10,6 @@ function currentRoute() {
 }
 
 function getRouteNotice(route: AppRoute) {
-  if (route.name === 'cases') {
-    return ['避雷案例', '案例列表将在后续任务接入。'] as const;
-  }
   if (route.name === 'case-detail') {
     return ['案例详情', '案例详情将在后续任务接入。'] as const;
   }
@@ -36,6 +34,10 @@ export default function App() {
 
   if (route.name === 'home') {
     return <HomePage onEnterWork={() => navigate('/work')} />;
+  }
+
+  if (route.name === 'cases') {
+    return <CasesPage search={route.search} />;
   }
 
   const [title, description] = getRouteNotice(route);
