@@ -1,30 +1,44 @@
-import { Menu, Moon, Sun } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
 import { BG_IMAGE_1, BG_IMAGE_2 } from './heroConfig';
 import { RevealLayer } from './RevealLayer';
+import { navigate } from './router';
+import { useTheme } from './theme';
 
 type Point = {
   x: number;
   y: number;
 };
 
-type Theme = 'dark' | 'light';
-
 type HomePageProps = {
   onEnterWork: () => void;
 };
 
-const medNavItems = ['首页', '避雷案例', '学术挑战', '专家策展', '美学引擎'];
+const homeLinks = [
+  ['首页', '/'],
+  ['避雷案例', '/cases'],
+  ['学术挑战', '/challenges'],
+  ['专家策展', '/curators'],
+  ['美学引擎', '/aesthetic-engine'],
+] as const;
 
 export function HomePage({ onEnterWork }: HomePageProps) {
   const mouse = useRef<Point>({ x: -999, y: -999 });
   const smooth = useRef<Point>({ x: -999, y: -999 });
   const rafRef = useRef<number | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [cursorPos, setCursorPos] = useState<Point>({ x: -999, y: -999 });
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const isDark = theme === 'dark';
-  const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
+
+  const handleNavigation = (event: ReactMouseEvent<HTMLAnchorElement>, href: string) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    setMenuOpen(false);
+    navigate(href);
+  };
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -49,6 +63,20 @@ export function HomePage({ onEnterWork }: HomePageProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
+
   return (
     <div
       className={`min-h-screen ${isDark ? 'bg-[#050708]' : 'bg-[#f6f8f7]'}`}
@@ -59,7 +87,10 @@ export function HomePage({ onEnterWork }: HomePageProps) {
           "'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
       }}
     >
-      <nav className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between p-4 sm:p-5">
+      <nav
+        aria-label="首页导航"
+        className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between p-4 sm:p-5"
+      >
         <div className="flex items-center gap-3">
           <svg
             className={isDark ? 'text-white' : 'text-[#101615]'}
@@ -87,9 +118,9 @@ export function HomePage({ onEnterWork }: HomePageProps) {
               : 'border-[#10201e]/10 bg-white/70 shadow-[0_18px_70px_rgba(20,37,34,0.12)]'
           }`}
         >
-          {medNavItems.map((item, index) => (
-            <button
-              key={item}
+          {homeLinks.map(([label, href], index) => (
+            <a
+              aria-current={href === '/' ? 'page' : undefined}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 index === 0
                   ? isDark
@@ -99,10 +130,12 @@ export function HomePage({ onEnterWork }: HomePageProps) {
                     ? 'text-white/70 hover:bg-white/10 hover:text-white'
                     : 'text-[#213432]/70 hover:bg-[#101615]/10 hover:text-[#101615]'
               }`}
-              type="button"
+              href={href}
+              key={href}
+              onClick={(event) => handleNavigation(event, href)}
             >
-              {item}
-            </button>
+              {label}
+            </a>
           ))}
         </div>
 
@@ -119,17 +152,17 @@ export function HomePage({ onEnterWork }: HomePageProps) {
           >
             {isDark ? <Sun size={18} strokeWidth={2} /> : <Moon size={18} strokeWidth={2} />}
           </button>
-          <button
-            className={`rounded-full px-6 py-2.5 text-sm font-semibold transition-all ${
+          <a
+            className={`home-apply-cta rounded-full px-6 py-2.5 text-sm font-semibold transition-all ${
               isDark
                 ? 'bg-white text-[#0b1110] hover:bg-[#dff7f1] hover:shadow-lg hover:shadow-cyan-300/20'
                 : 'bg-[#0f1b19] text-white hover:bg-[#18312d] hover:shadow-lg hover:shadow-[#18312d]/20'
             }`}
-            type="button"
-            onClick={onEnterWork}
+            href="/apply?source=home"
+            onClick={(event) => handleNavigation(event, '/apply?source=home')}
           >
-            进入理想国
-          </button>
+            申请内测
+          </a>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
@@ -147,17 +180,58 @@ export function HomePage({ onEnterWork }: HomePageProps) {
           </button>
 
           <button
+            aria-controls="home-mobile-menu"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? '关闭主菜单' : '打开主菜单'}
             className={`inline-flex h-11 w-11 items-center justify-center rounded-full border backdrop-blur-xl ${
               isDark
                 ? 'border-white/20 bg-white/10 text-white'
                 : 'border-[#10201e]/10 bg-white/70 text-[#101615]'
             }`}
+            onClick={() => setMenuOpen((open) => !open)}
+            ref={menuButtonRef}
             type="button"
-            aria-label="Open menu"
           >
-            <Menu size={20} strokeWidth={2} />
+            {menuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
           </button>
         </div>
+
+        {menuOpen ? (
+          <div
+            className={`absolute left-4 right-4 top-[76px] overflow-hidden rounded-lg border p-3 backdrop-blur-xl md:hidden ${
+              isDark
+                ? 'border-white/15 bg-[#071512]/95 text-white shadow-2xl shadow-black/40'
+                : 'border-[#10201e]/15 bg-white/95 text-[#101615] shadow-2xl shadow-[#18312d]/15'
+            }`}
+            id="home-mobile-menu"
+          >
+            {homeLinks.map(([label, href], index) => (
+              <a
+                aria-current={href === '/' ? 'page' : undefined}
+                className={`flex min-h-12 items-center justify-between border-b px-3 text-base font-semibold ${
+                  isDark
+                    ? 'border-white/10 text-white/80 first:text-[#69cec6]'
+                    : 'border-[#10201e]/10 text-[#213432]/80 first:text-[#0d756f]'
+                }`}
+                href={href}
+                key={href}
+                onClick={(event) => handleNavigation(event, href)}
+              >
+                <span>{label}</span>
+                <span className="font-mono text-[10px] opacity-65">0{index + 1}</span>
+              </a>
+            ))}
+            <a
+              className={`mt-3 flex min-h-12 items-center justify-center rounded-md text-base font-semibold ${
+                isDark ? 'bg-[#69cec6] text-[#07110f]' : 'bg-[#0d756f] text-white'
+              }`}
+              href="/apply?source=home"
+              onClick={(event) => handleNavigation(event, '/apply?source=home')}
+            >
+              申请内测
+            </a>
+          </div>
+        ) : null}
       </nav>
 
       <section

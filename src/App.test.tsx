@@ -2,6 +2,7 @@ import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
+import { ThemeProvider } from './theme';
 
 vi.mock('./RevealLayer', () => ({
   RevealLayer: () => <div data-testid="reveal-layer" />,
@@ -15,6 +16,8 @@ describe('Med-Utopia cover', () => {
   const originalPath = window.location.pathname;
 
   beforeEach(() => {
+    localStorage.clear();
+    vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
     vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1));
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
     window.history.pushState(null, '', '/');
@@ -33,13 +36,18 @@ describe('Med-Utopia cover', () => {
     });
     document.body.removeChild(container);
     vi.unstubAllGlobals();
+    localStorage.clear();
     window.history.pushState(null, '', originalPath);
   });
 
   const renderApp = (path = '/') => {
     window.history.pushState(null, '', path);
     act(() => {
-      root.render(<App />);
+      root.render(
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>,
+      );
     });
   };
 
@@ -70,7 +78,7 @@ describe('Med-Utopia cover', () => {
     renderApp();
 
     const enterButton = Array.from(container.querySelectorAll('button')).find((button) =>
-      button.textContent?.includes('进入理想国'),
+      button.textContent?.trim() === '进入理想国',
     );
     expect(enterButton).not.toBeUndefined();
 
@@ -81,6 +89,50 @@ describe('Med-Utopia cover', () => {
     expect(window.location.pathname).toBe('/work');
     expect(container.querySelector('[data-page="work"]')).not.toBeNull();
     expect(container.querySelector('.gallery-stage')?.className).toContain('long-gallery');
+  });
+
+  it('connects real homepage navigation while keeping one hero entry', () => {
+    renderApp();
+    const caseLink = container.querySelector('a[href="/cases"]');
+
+    expect(caseLink).not.toBeNull();
+    expect(caseLink?.textContent).toContain('避雷案例');
+    expect(container.querySelector('.home-apply-cta')?.textContent).toBe('申请内测');
+    expect(container.querySelector('.home-apply-cta')?.getAttribute('href')).toBe(
+      '/apply?source=home',
+    );
+    expect(
+      Array.from(container.querySelectorAll('button')).filter(
+        (button) => button.textContent?.trim() === '进入理想国',
+      ),
+    ).toHaveLength(1);
+  });
+
+  it('uses the top-right homepage CTA to enter the apply route', () => {
+    renderApp();
+    const applyLink = container.querySelector<HTMLAnchorElement>('.home-apply-cta');
+
+    act(() =>
+      applyLink?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })),
+    );
+
+    expect(window.location.pathname).toBe('/apply');
+    expect(window.location.search).toBe('?source=home');
+    expect(container.textContent).toContain('申请内测');
+  });
+
+  it('opens the approved homepage mobile menu and closes it with Escape', () => {
+    renderApp();
+    const menuButton = container.querySelector<HTMLButtonElement>('button[aria-label="打开主菜单"]');
+
+    act(() => menuButton?.click());
+    expect(menuButton?.getAttribute('aria-expanded')).toBe('true');
+    expect(container.querySelector('#home-mobile-menu a[href="/cases"]')).not.toBeNull();
+    expect(container.querySelector('#home-mobile-menu a[href="/apply?source=home"]')).not.toBeNull();
+
+    act(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })));
+    expect(menuButton?.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(menuButton);
   });
 
   it('renders the immersive long product page only on the work route', () => {

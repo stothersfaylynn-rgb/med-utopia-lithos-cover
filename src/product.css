@@ -13,6 +13,7 @@ html.product-scroll-page #root {
 }
 
 .product-app {
+  min-height: 100dvh;
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--typography-font-body);
@@ -36,4 +37,158 @@ html.product-scroll-page #root {
 
 .skip-link:focus-visible {
   transform: translateY(0);
+}
+
+.product-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--layer-sticky);
+  display: flex;
+  min-height: var(--navigation-height);
+  align-items: center;
+  gap: var(--navigation-gap);
+  padding-inline: var(--navigation-padding-x);
+  border-block-end: var(--border-default) solid var(--navigation-border);
+  background: var(--navigation-background);
+}
+
+.product-shell-brand,
+.product-shell-link,
+.product-shell-apply {
+  display: inline-flex;
+  min-height: var(--navigation-item-min-height);
+  align-items: center;
+  text-decoration: none;
+}
+
+.product-shell-brand {
+  gap: var(--spacing-inline-sm);
+  color: var(--color-foreground);
+  font-weight: var(--typography-weight-semibold);
+}
+
+.product-shell-brand-mark {
+  inline-size: var(--primitive-size-icon-lg);
+  block-size: var(--primitive-size-icon-lg);
+  border: var(--border-focus) solid var(--color-primary);
+  border-radius: var(--radius-control);
+}
+
+.product-shell-nav {
+  position: absolute;
+  inset-block-start: var(--navigation-height);
+  inset-inline: var(--navigation-padding-x);
+  display: none;
+  flex-direction: column;
+  gap: var(--navigation-gap);
+  padding: var(--spacing-component-sm);
+  border: var(--border-default) solid var(--navigation-border);
+  border-radius: var(--navigation-radius);
+  background: var(--navigation-background);
+  box-shadow: var(--shadow-floating);
+}
+
+.product-shell-nav[data-open='true'] {
+  display: flex;
+}
+
+.product-shell-link {
+  padding-inline: var(--navigation-item-padding-x);
+  border-radius: var(--navigation-radius);
+  background: var(--navigation-item-background);
+  color: var(--navigation-foreground);
+}
+
+.product-shell-link:hover {
+  background: var(--navigation-item-background-hover);
+}
+
+.product-shell-link[aria-current='page'] {
+  background: var(--navigation-item-background-active);
+  color: var(--navigation-item-foreground-active);
+}
+
+.product-shell-apply {
+  justify-content: center;
+  padding-inline: var(--button-padding-x);
+  border-radius: var(--button-radius);
+  background: var(--button-primary-background);
+  color: var(--button-primary-foreground);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+}
+
+.product-shell-apply:hover {
+  background: var(--button-primary-background-hover);
+}
+
+.product-shell-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--navigation-gap);
+  margin-inline-start: auto;
+}
+
+.product-shell-theme,
+.product-shell-menu {
+  display: inline-flex;
+  inline-size: var(--navigation-item-min-height);
+  block-size: var(--navigation-item-min-height);
+  align-items: center;
+  justify-content: center;
+  border: var(--border-default) solid var(--navigation-border);
+  border-radius: var(--navigation-radius);
+  background: var(--navigation-item-background);
+  color: var(--navigation-foreground);
+}
+
+.product-shell-theme:hover,
+.product-shell-menu:hover {
+  background: var(--navigation-item-background-hover);
+}
+
+.product-route-state {
+  max-inline-size: 65ch;
+  margin-inline: auto;
+  padding: var(--spacing-section-lg) var(--spacing-page-x);
+}
+
+.product-route-state h1 {
+  margin-block: var(--spacing-component-sm);
+  font-family: var(--typography-font-article);
+  font-size: var(--typography-size-page-title);
+  line-height: var(--typography-line-heading);
+}
+
+.product-route-state p {
+  color: var(--color-foreground-secondary);
+  font-size: var(--typography-size-body);
+  line-height: var(--typography-line-body);
+}
+
+.product-route-eyebrow {
+  font-family: var(--typography-font-meta);
+  font-size: var(--typography-size-label);
+}
+
+@media (min-width: 64rem) {
+  .product-shell-nav {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-inline-start: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .product-shell-controls {
+    margin-inline-start: var(--spacing-inline-sm);
+  }
+
+  .product-shell-menu {
+    display: none;
+  }
 }
