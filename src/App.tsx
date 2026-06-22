@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ProductShell } from './components/ProductShell';
 import { HomePage } from './HomePage';
+import { CaseDetailPage } from './pages/CaseDetailPage';
 import { CasesPage } from './pages/CasesPage';
 import { ProductGallery } from './ProductGallery';
 import { navigate, parseRoute, type AppRoute } from './router';
@@ -10,9 +11,6 @@ function currentRoute() {
 }
 
 function getRouteNotice(route: AppRoute) {
-  if (route.name === 'case-detail') {
-    return ['案例详情', '案例详情将在后续任务接入。'] as const;
-  }
   if (route.name === 'apply') {
     return ['申请内测', '申请表将在后续任务接入。'] as const;
   }
@@ -38,6 +36,10 @@ export default function App() {
 
   if (route.name === 'cases') {
     return <CasesPage search={route.search} />;
+  }
+
+  if (route.name === 'case-detail') {
+    return <CaseDetailPage caseSlug={route.caseSlug} />;
   }
 
   const [title, description] = getRouteNotice(route);
