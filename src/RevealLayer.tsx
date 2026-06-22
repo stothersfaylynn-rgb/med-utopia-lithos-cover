@@ -1,17 +1,24 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { buildMaskGradient, SPOTLIGHT_R } from './heroConfig';
+import { buildMaskGradient, MASK_STOPS, SPOTLIGHT_R } from './heroConfig';
 
 type RevealLayerProps = {
   image: string;
   cursorX: number;
   cursorY: number;
+  reducedMotion: boolean;
 };
 
-export function RevealLayer({ image, cursorX, cursorY }: RevealLayerProps) {
+const STATIC_MASK_IMAGE = `radial-gradient(circle ${SPOTLIGHT_R}px at 50% 50%, ${MASK_STOPS.map(
+  ([offset, color]) => `${color} ${offset * 100}%`,
+).join(', ')})`;
+
+export function RevealLayer({ image, cursorX, cursorY, reducedMotion }: RevealLayerProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [maskImage, setMaskImage] = useState<string>('');
 
   useLayoutEffect(() => {
+    if (reducedMotion) return undefined;
+
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
 
@@ -24,9 +31,11 @@ export function RevealLayer({ image, cursorX, cursorY }: RevealLayerProps) {
     window.addEventListener('resize', resizeCanvas);
 
     return () => window.removeEventListener('resize', resizeCanvas);
-  }, []);
+  }, [reducedMotion]);
 
   useLayoutEffect(() => {
+    if (reducedMotion) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!canvas || !ctx) return;
@@ -48,10 +57,11 @@ export function RevealLayer({ image, cursorX, cursorY }: RevealLayerProps) {
       />
       <div
         className="absolute inset-0 bg-center bg-cover bg-no-repeat z-30 pointer-events-none"
+        data-reveal-mode={reducedMotion ? 'static' : 'dynamic'}
         style={{
           backgroundImage: `url(${image})`,
-          maskImage,
-          WebkitMaskImage: maskImage,
+          maskImage: reducedMotion ? STATIC_MASK_IMAGE : maskImage,
+          WebkitMaskImage: reducedMotion ? STATIC_MASK_IMAGE : maskImage,
           maskSize: '100% 100%',
           WebkitMaskSize: '100% 100%',
         }}

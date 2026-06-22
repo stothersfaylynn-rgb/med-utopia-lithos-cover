@@ -1,8 +1,15 @@
+import { useEffect } from 'react';
 import { ProductShell } from '../components/ProductShell';
 import { getCaseBySlug } from '../data/cases';
 
 export function CaseDetailPage({ caseSlug }: { caseSlug: string }) {
   const record = getCaseBySlug(caseSlug);
+
+  useEffect(() => {
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    if (!targetId) return;
+    document.getElementById(targetId)?.scrollIntoView({ block: 'center' });
+  }, [caseSlug]);
 
   if (!record) {
     return (

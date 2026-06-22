@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { galleryWorks, topNavItems } from './galleryContent';
+import { useReducedMotion } from './motion';
 import { ParticleField } from './ParticleField';
 
 type Point = {
@@ -9,6 +10,16 @@ type Point = {
 };
 
 const initialPointer: Point = { x: -999, y: -999 };
+
+const workDestinations: Record<string, string> = {
+  避雷案例: '/cases',
+  专家点评: '/cases/acute-aortic-dissection-triage#expert-commentary',
+};
+
+const topNavDestinations: Record<string, string> = {
+  案例库: '/cases',
+  申请内测: '/apply?source=work',
+};
 
 function canUseNativeScroll() {
   return typeof navigator === 'undefined' || !navigator.userAgent.includes('jsdom');
@@ -44,6 +55,7 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
   const rafRef = useRef<number | null>(null);
   const [cursorPos, setCursorPos] = useState<Point>(initialPointer);
   const [activeIndex, setActiveIndex] = useState(0);
+  const reducedMotion = useReducedMotion();
   const activeWork = galleryWorks[activeIndex];
 
   const stageStyle = useMemo(() => {
@@ -77,6 +89,8 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
   }, [activeIndex, activeWork.accent, activeWork.shadow, cursorPos.x, cursorPos.y]);
 
   useEffect(() => {
+    if (reducedMotion) return undefined;
+
     const handleMouseMove = (event: MouseEvent) => {
       mouse.current = { x: event.clientX, y: event.clientY };
     };
@@ -97,7 +111,7 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
         cancelAnimationFrame(rafRef.current);
       }
     };
-  }, []);
+  }, [reducedMotion]);
 
   useEffect(() => {
     document.documentElement.classList.add('work-scroll-page');
@@ -111,6 +125,8 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
   }, []);
 
   useEffect(() => {
+    if (reducedMotion) return undefined;
+
     const updateFromScroll = () => {
       const viewportHeight = window.innerHeight || 900;
       const nextIndex = clampIndex(Math.round(window.scrollY / (viewportHeight * 0.92)));
@@ -120,7 +136,7 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
     window.addEventListener('scroll', updateFromScroll, { passive: true });
     updateFromScroll();
     return () => window.removeEventListener('scroll', updateFromScroll);
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div className="work-scroll-document relative bg-black text-white">
@@ -158,11 +174,32 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
             aria-label="主导航"
             className="glass-nav pointer-events-auto ml-auto flex items-center gap-1 rounded-full px-2 py-2"
           >
-            {topNavItems.map((item) => (
-              <button className="nav-chip" key={item} type="button">
-                {item}
-              </button>
-            ))}
+            {reducedMotion
+              ? galleryWorks.map((work, index) => (
+                  <button
+                    aria-pressed={activeIndex === index}
+                    className="nav-chip"
+                    data-work-selector
+                    key={work.category}
+                    onClick={() => setActiveIndex(index)}
+                    type="button"
+                  >
+                    {work.category}
+                  </button>
+                ))
+              : topNavItems.map((item) => {
+                  const href = topNavDestinations[item];
+
+                  return href ? (
+                    <a className="nav-chip no-underline" href={href} key={item}>
+                      {item}
+                    </a>
+                  ) : (
+                    <button className="nav-chip" disabled key={item} type="button">
+                      {item}
+                    </button>
+                  );
+                })}
           </nav>
         </header>
 
@@ -174,6 +211,7 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
             {galleryWorks.map((work, index) => {
               const relativeSlot = getRelativeSlot(index, activeIndex);
               const slotClass = getSlotClass(relativeSlot);
+              const destination = workDestinations[work.category];
 
               return (
                 <article
@@ -186,9 +224,19 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
                       '--relative-slot': relativeSlot,
                     } as CSSProperties
                   }
-                  onMouseEnter={() => setActiveIndex(index)}
+                  onMouseEnter={reducedMotion ? undefined : () => setActiveIndex(index)}
                 >
                   <div className="slab-orbit" aria-hidden="true" />
+                  {destination ? (
+                    <a
+                      aria-label={`进入${work.title}`}
+                      className="absolute inset-0 z-20 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                      href={destination}
+                      onFocus={() => setActiveIndex(index)}
+                    >
+                      <span className="sr-only">进入{work.title}</span>
+                    </a>
+                  ) : null}
                   <div className="slab-content">
                     <span className="work-signal">{work.signal}</span>
                     <h1>{work.title}</h1>

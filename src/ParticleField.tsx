@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useReducedMotion } from './motion';
 
 type Pointer = {
   x: number;
@@ -37,6 +38,7 @@ export function ParticleField({ accent, activeIndex, pointer }: ParticleFieldPro
   const pointerRef = useRef(pointer);
   const accentRef = useRef(accent);
   const indexRef = useRef(activeIndex);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     pointerRef.current = pointer;
@@ -62,7 +64,9 @@ export function ParticleField({ accent, activeIndex, pointer }: ParticleFieldPro
     if (!canvas || !ctx) return undefined;
 
     let frame = 0;
-    let raf = 0;
+    let raf: number | null = null;
+    let running = false;
+    const coarsePointer = window.matchMedia('(pointer: coarse)');
 
     const resize = () => {
       const ratio = window.devicePixelRatio || 1;
@@ -77,6 +81,8 @@ export function ParticleField({ accent, activeIndex, pointer }: ParticleFieldPro
     };
 
     const draw = () => {
+      if (!running) return;
+
       const width = window.innerWidth;
       const height = window.innerHeight;
       const pointerX = pointerRef.current.x < 0 ? width * 0.55 : pointerRef.current.x;
@@ -137,15 +143,53 @@ export function ParticleField({ accent, activeIndex, pointer }: ParticleFieldPro
       raf = requestAnimationFrame(draw);
     };
 
-    resize();
-    window.addEventListener('resize', resize);
-    raf = requestAnimationFrame(draw);
+    const stop = () => {
+      running = false;
+      if (raf !== null) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+    };
+
+    const start = () => {
+      if (running || reducedMotion || document.hidden || coarsePointer.matches) return;
+      resize();
+      running = true;
+      raf = requestAnimationFrame(draw);
+    };
+
+    const synchronizeAnimation = () => {
+      if (reducedMotion || document.hidden || coarsePointer.matches) {
+        stop();
+      } else {
+        start();
+      }
+    };
+
+    const handleResize = () => {
+      if (running) resize();
+    };
+
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('visibilitychange', synchronizeAnimation);
+    if (coarsePointer.addEventListener) {
+      coarsePointer.addEventListener('change', synchronizeAnimation);
+    } else {
+      coarsePointer.addListener?.(synchronizeAnimation);
+    }
+    synchronizeAnimation();
 
     return () => {
-      window.removeEventListener('resize', resize);
-      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', synchronizeAnimation);
+      if (coarsePointer.removeEventListener) {
+        coarsePointer.removeEventListener('change', synchronizeAnimation);
+      } else {
+        coarsePointer.removeListener?.(synchronizeAnimation);
+      }
+      stop();
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <canvas

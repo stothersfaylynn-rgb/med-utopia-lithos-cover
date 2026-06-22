@@ -1,6 +1,7 @@
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
 import { BG_IMAGE_1, BG_IMAGE_2 } from './heroConfig';
+import { useReducedMotion } from './motion';
 import { RevealLayer } from './RevealLayer';
 import { navigate } from './router';
 import { useTheme } from './theme';
@@ -29,6 +30,7 @@ export function HomePage({ onEnterWork }: HomePageProps) {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [cursorPos, setCursorPos] = useState<Point>({ x: -999, y: -999 });
   const [menuOpen, setMenuOpen] = useState(false);
+  const reducedMotion = useReducedMotion();
   const { theme, toggleTheme } = useTheme();
 
   const isDark = theme === 'dark';
@@ -41,6 +43,8 @@ export function HomePage({ onEnterWork }: HomePageProps) {
   };
 
   useEffect(() => {
+    if (reducedMotion) return undefined;
+
     const handleMouseMove = (event: MouseEvent) => {
       mouse.current = { x: event.clientX, y: event.clientY };
     };
@@ -61,7 +65,7 @@ export function HomePage({ onEnterWork }: HomePageProps) {
         cancelAnimationFrame(rafRef.current);
       }
     };
-  }, []);
+  }, [reducedMotion]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -247,7 +251,12 @@ export function HomePage({ onEnterWork }: HomePageProps) {
           style={{ backgroundImage: `url(${BG_IMAGE_1})` }}
         />
 
-        <RevealLayer image={BG_IMAGE_2} cursorX={cursorPos.x} cursorY={cursorPos.y} />
+        <RevealLayer
+          image={BG_IMAGE_2}
+          cursorX={cursorPos.x}
+          cursorY={cursorPos.y}
+          reducedMotion={reducedMotion}
+        />
 
         <div
           className={`absolute inset-0 z-40 ${

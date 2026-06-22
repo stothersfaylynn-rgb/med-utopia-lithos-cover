@@ -5,7 +5,9 @@ import App from './App';
 import { ThemeProvider } from './theme';
 
 vi.mock('./RevealLayer', () => ({
-  RevealLayer: () => <div data-testid="reveal-layer" />,
+  RevealLayer: ({ reducedMotion = false }: { reducedMotion?: boolean }) => (
+    <div data-reveal-mode={reducedMotion ? 'static' : 'dynamic'} data-testid="reveal-layer" />
+  ),
 }));
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -15,9 +17,28 @@ describe('Med-Utopia cover', () => {
   let root: ReturnType<typeof createRoot>;
   const originalPath = window.location.pathname;
 
+  const installMatchMedia = ({
+    reducedMotion,
+    coarsePointer,
+  }: {
+    reducedMotion: boolean;
+    coarsePointer: boolean;
+  }) => {
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches:
+          (query === '(prefers-reduced-motion: reduce)' && reducedMotion) ||
+          (query === '(pointer: coarse)' && coarsePointer),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    );
+  };
+
   beforeEach(() => {
     localStorage.clear();
-    vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
+    installMatchMedia({ reducedMotion: false, coarsePointer: false });
     vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1));
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
     window.history.pushState(null, '', '/');
@@ -36,6 +57,7 @@ describe('Med-Utopia cover', () => {
     });
     document.body.removeChild(container);
     vi.unstubAllGlobals();
+    Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
     localStorage.clear();
     window.history.pushState(null, '', originalPath);
   });
@@ -245,5 +267,74 @@ describe('Med-Utopia cover', () => {
     expect(container.querySelector('.gallery-stage')?.getAttribute('style')).toContain('--spiral-progress');
     expect(container.querySelectorAll('.work-slab.is-current')).toHaveLength(1);
     expect(container.querySelectorAll('.work-slab.is-above, .work-slab.is-below, .work-slab.is-deep')).not.toHaveLength(0);
+  });
+
+  it('links work controls only to existing first-loop surfaces', () => {
+    renderApp('/work');
+
+    expect(container.querySelector('.work-slab a[href="/cases"]')).not.toBeNull();
+    expect(
+      container.querySelector(
+        '.work-slab a[href="/cases/acute-aortic-dissection-triage#expert-commentary"]',
+      ),
+    ).not.toBeNull();
+    expect(container.querySelector('nav[aria-label="主导航"] a[href="/cases"]')).not.toBeNull();
+    expect(
+      container.querySelector('nav[aria-label="主导航"] a[href="/apply?source=work"]'),
+    ).not.toBeNull();
+    expect(container.querySelector('.work-slab a[href="/challenges"]')).toBeNull();
+    expect(container.querySelector('.work-slab a[href="/curators"]')).toBeNull();
+    expect(container.querySelector('.work-slab a[href="/aesthetic-engine"]')).toBeNull();
+
+    const challengeButton = Array.from(
+      container.querySelectorAll<HTMLButtonElement>('nav[aria-label="主导航"] button'),
+    ).find((button) => button.textContent === '学术挑战');
+    expect(challengeButton?.disabled).toBe(true);
+  });
+
+  it('positions an expert commentary deep link after the case detail renders', () => {
+    const scrollIntoView = vi.fn();
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+
+    renderApp('/cases/acute-aortic-dissection-triage#expert-commentary');
+
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+  });
+
+  it('stops continuous homepage animation when reduced motion is requested', () => {
+    installMatchMedia({ reducedMotion: true, coarsePointer: false });
+
+    renderApp('/');
+
+    expect(requestAnimationFrame).not.toHaveBeenCalled();
+    expect(container.querySelector('[data-reveal-mode="static"]')).not.toBeNull();
+  });
+
+  it('renders a directly selectable static work state in reduce mode', () => {
+    installMatchMedia({ reducedMotion: true, coarsePointer: false });
+
+    renderApp('/work');
+
+    expect(container.querySelectorAll('button[data-work-selector]')).toHaveLength(5);
+    expect(requestAnimationFrame).not.toHaveBeenCalled();
+    expect(container.querySelector('[data-active-category="避雷案例"]')).not.toBeNull();
+
+    const challengeSelector = Array.from(
+      container.querySelectorAll<HTMLButtonElement>('button[data-work-selector]'),
+    ).find((button) => button.textContent === '学术挑战');
+    act(() => challengeSelector?.click());
+
+    expect(container.querySelector('[data-active-category="学术挑战"]')).not.toBeNull();
+    expect(challengeSelector?.getAttribute('aria-pressed')).toBe('true');
+
+    act(() => {
+      Object.defineProperty(window, 'scrollY', { configurable: true, value: 1800 });
+      window.dispatchEvent(new Event('scroll'));
+    });
+
+    expect(container.querySelector('[data-active-category="学术挑战"]')).not.toBeNull();
   });
 });
