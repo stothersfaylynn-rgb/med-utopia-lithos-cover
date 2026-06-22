@@ -16,32 +16,39 @@ describe('apply form contract', () => {
       identity: '请选择你的身份',
       school: '请输入毕业或在读院校',
       specialty: '请输入专科或关注方向',
-      phone: '请输入联系电话',
+      phone: '请输入有效的中国大陆11位手机号码',
       modules: '请至少选择一个希望参与的模块',
       consent: '请确认同意我们就内测事宜与你联系',
     });
   });
 
-  it('rejects a phone number shorter than five characters after trimming', () => {
+  it.each([
+    ['10 digits', '1380013800'],
+    ['12 digits', '138001380000'],
+    ['non-digits', '1380013800a'],
+    ['wrong first digit', '23800138000'],
+    ['wrong second digit', '12800138000'],
+    ['country prefix', '+8613800138000'],
+  ])('rejects %s', (_scenario, phone) => {
     expect(
       validateApply({
         identity: '临床医生',
         school: '理想医学院',
         specialty: '急诊医学',
-        phone: ' 1234 ',
+        phone,
         modules: ['避雷案例'],
         consent: true,
       }),
-    ).toEqual({ phone: '请输入联系电话' });
+    ).toEqual({ phone: '请输入有效的中国大陆11位手机号码' });
   });
 
-  it('accepts a complete non-file application', () => {
+  it('accepts a complete non-file application after trimming the phone number', () => {
     expect(
       validateApply({
         identity: '临床医生',
         school: '理想医学院',
         specialty: '急诊医学',
-        phone: '13800000000',
+        phone: ' 13800138000 ',
         modules: ['避雷案例'],
         consent: true,
       }),

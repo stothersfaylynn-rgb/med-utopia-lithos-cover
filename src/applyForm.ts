@@ -15,7 +15,9 @@ export function validateApply(values: ApplyValues): ApplyErrors {
   if (!values.identity.trim()) errors.identity = '请选择你的身份';
   if (!values.school.trim()) errors.school = '请输入毕业或在读院校';
   if (!values.specialty.trim()) errors.specialty = '请输入专科或关注方向';
-  if (values.phone.trim().length < 5) errors.phone = '请输入联系电话';
+  if (!/^1[3-9]\d{9}$/.test(values.phone.trim())) {
+    errors.phone = '请输入有效的中国大陆11位手机号码';
+  }
   if (values.modules.length === 0) errors.modules = '请至少选择一个希望参与的模块';
   if (!values.consent) errors.consent = '请确认同意我们就内测事宜与你联系';
 

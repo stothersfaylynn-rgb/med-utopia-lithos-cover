@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ProductShell } from './components/ProductShell';
 import { HomePage } from './HomePage';
+import { ApplyPage } from './pages/ApplyPage';
 import { CaseDetailPage } from './pages/CaseDetailPage';
 import { CasesPage } from './pages/CasesPage';
 import { ProductGallery } from './ProductGallery';
@@ -10,10 +11,7 @@ function currentRoute() {
   return parseRoute(window.location.pathname, window.location.search);
 }
 
-function getRouteNotice(route: AppRoute) {
-  if (route.name === 'apply') {
-    return ['申请内测', '申请表将在后续任务接入。'] as const;
-  }
+function getRouteNotice(_route: AppRoute) {
   return ['该页面暂未开放', '此入口已纳入第一版导航，内容将在后续阶段接入。'] as const;
 }
 
@@ -40,6 +38,10 @@ export default function App() {
 
   if (route.name === 'case-detail') {
     return <CaseDetailPage caseSlug={route.caseSlug} />;
+  }
+
+  if (route.name === 'apply') {
+    return <ApplyPage search={window.location.search} />;
   }
 
   const [title, description] = getRouteNotice(route);
