@@ -24,6 +24,20 @@ html.product-scroll-page #root {
   outline-offset: var(--border-focus);
 }
 
+.hit-target-44 {
+  position: relative;
+}
+
+.hit-target-44::before {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  min-inline-size: var(--primitive-size-control);
+  min-block-size: var(--primitive-size-control);
+  content: '';
+  transform: translate(-50%, -50%);
+}
+
 .skip-link {
   position: fixed;
   inset-block-start: var(--spacing-component-sm);
@@ -120,6 +134,10 @@ html.product-scroll-page #root {
 
 .product-shell-apply:hover {
   background: var(--button-primary-background-hover);
+}
+
+.product-shell-apply-desktop {
+  display: none;
 }
 
 .product-shell-controls {
@@ -1227,6 +1245,14 @@ html.product-scroll-page #root {
 
   .product-shell-controls {
     margin-inline-start: var(--spacing-inline-sm);
+  }
+
+  .product-shell-apply-mobile {
+    display: none;
+  }
+
+  .product-shell-apply-desktop {
+    display: inline-flex;
   }
 
   .product-shell-menu {

@@ -162,7 +162,7 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
 
         <header className="pointer-events-none fixed left-0 right-0 top-0 z-[110] flex items-center justify-between px-5 py-5 sm:px-8">
           <button
-            className="brand-mark pointer-events-auto hidden items-center gap-3 border-0 bg-transparent sm:flex"
+            className="brand-mark hit-target-44 pointer-events-auto hidden items-center gap-3 border-0 bg-transparent sm:flex"
             type="button"
             onClick={onGoHome}
           >
@@ -178,7 +178,7 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
               ? galleryWorks.map((work, index) => (
                   <button
                     aria-pressed={activeIndex === index}
-                    className="nav-chip"
+                    className="nav-chip hit-target-44"
                     data-work-selector
                     key={work.category}
                     onClick={() => setActiveIndex(index)}
@@ -191,11 +191,11 @@ export function ProductGallery({ onGoHome }: ProductGalleryProps) {
                   const href = topNavDestinations[item];
 
                   return href ? (
-                    <a className="nav-chip no-underline" href={href} key={item}>
+                    <a className="nav-chip hit-target-44 no-underline" href={href} key={item}>
                       {item}
                     </a>
                   ) : (
-                    <button className="nav-chip" disabled key={item} type="button">
+                    <button className="nav-chip hit-target-44" disabled key={item} type="button">
                       {item}
                     </button>
                   );

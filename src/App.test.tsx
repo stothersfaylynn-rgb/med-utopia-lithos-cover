@@ -73,6 +73,29 @@ describe('Med-Utopia cover', () => {
     });
   };
 
+  const clickLink = (href: string) => {
+    const link = container.querySelector<HTMLAnchorElement>(`a[href="${href}"]`);
+    if (!link) throw new Error(`Missing link: ${href}`);
+    act(() => {
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    });
+  };
+
+  const changeControl = (selector: string, value: string) => {
+    const control = container.querySelector<HTMLInputElement | HTMLSelectElement>(selector);
+    if (!control) throw new Error(`Missing form control: ${selector}`);
+    act(() => {
+      const prototype =
+        control instanceof HTMLSelectElement
+          ? HTMLSelectElement.prototype
+          : HTMLInputElement.prototype;
+      Object.getOwnPropertyDescriptor(prototype, 'value')?.set?.call(control, value);
+      control.dispatchEvent(
+        new Event(control instanceof HTMLSelectElement ? 'change' : 'input', { bubbles: true }),
+      );
+    });
+  };
+
   const scrollToWorkIndex = (index: number) => {
     Object.defineProperty(window, 'scrollY', {
       configurable: true,
@@ -130,6 +153,18 @@ describe('Med-Utopia cover', () => {
     ).toHaveLength(1);
   });
 
+  it('gives locked homepage desktop actions a non-visual 44px hit area', () => {
+    renderApp('/');
+
+    const desktopActions = container.querySelectorAll(
+      'nav[aria-label="首页导航"] .md\\:flex a',
+    );
+    expect(desktopActions).toHaveLength(6);
+    expect(
+      Array.from(desktopActions).every((action) => action.classList.contains('hit-target-44')),
+    ).toBe(true);
+  });
+
   it('uses the top-right homepage CTA to enter the apply route', () => {
     renderApp();
     const applyLink = container.querySelector<HTMLAnchorElement>('.home-apply-cta');
@@ -141,6 +176,65 @@ describe('Med-Utopia cover', () => {
     expect(window.location.pathname).toBe('/apply');
     expect(window.location.search).toBe('?source=home');
     expect(container.textContent).toContain('申请内测');
+  });
+
+  it('completes home to case application success without deferred features', () => {
+    renderApp('/');
+
+    clickLink('/cases');
+    expect(window.location.pathname).toBe('/cases');
+
+    clickLink('/cases/acute-aortic-dissection-triage');
+    expect(window.location.pathname).toBe('/cases/acute-aortic-dissection-triage');
+
+    clickLink(
+      '/apply?source=case-detail&type=contributor&case=acute-aortic-dissection-triage',
+    );
+    expect(`${window.location.pathname}${window.location.search}`).toBe(
+      '/apply?source=case-detail&type=contributor&case=acute-aortic-dissection-triage',
+    );
+
+    changeControl('select[name="identity"]', '临床医生');
+    changeControl('input[name="school"]', '理想医学院');
+    changeControl('input[name="specialty"]', '急诊医学');
+    changeControl('input[name="phone"]', '13800000000');
+    act(() => container.querySelector<HTMLInputElement>('input[name="consent"]')?.click());
+    act(() => {
+      container
+        .querySelector('form')
+        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    });
+
+    expect(`${window.location.pathname}${window.location.search}`).toBe(
+      '/apply?status=success&source=case-detail&type=contributor&case=acute-aortic-dissection-triage',
+    );
+    expect(container.textContent).toContain('申请已提交');
+    expect(container.querySelector('input[type="file"]')).toBeNull();
+  });
+
+  it('orders product navigation before theme and the global apply action', () => {
+    renderApp('/cases');
+
+    const finalPrimaryLink = container.querySelector<HTMLAnchorElement>(
+      'nav[aria-label="主导航"] a[href="/aesthetic-engine"]',
+    );
+    const themeButton = container.querySelector<HTMLButtonElement>('.product-shell-theme');
+    const desktopApply = container.querySelector<HTMLAnchorElement>(
+      '.product-shell-controls .product-shell-apply',
+    );
+
+    expect(finalPrimaryLink).not.toBeNull();
+    expect(themeButton).not.toBeNull();
+    expect(desktopApply).not.toBeNull();
+    if (!finalPrimaryLink || !themeButton || !desktopApply) {
+      throw new Error('Product shell keyboard order is incomplete');
+    }
+    expect(
+      Boolean(finalPrimaryLink.compareDocumentPosition(themeButton) & Node.DOCUMENT_POSITION_FOLLOWING),
+    ).toBe(true);
+    expect(
+      Boolean(themeButton.compareDocumentPosition(desktopApply) & Node.DOCUMENT_POSITION_FOLLOWING),
+    ).toBe(true);
   });
 
   it('opens the approved homepage mobile menu and closes it with Escape', () => {
@@ -290,6 +384,16 @@ describe('Med-Utopia cover', () => {
       container.querySelectorAll<HTMLButtonElement>('nav[aria-label="主导航"] button'),
     ).find((button) => button.textContent === '学术挑战');
     expect(challengeButton?.disabled).toBe(true);
+  });
+
+  it('gives locked work navigation a non-visual 44px hit area', () => {
+    renderApp('/work');
+
+    const targets = container.querySelectorAll('.brand-mark, .glass-nav .nav-chip');
+    expect(targets.length).toBeGreaterThan(0);
+    expect(Array.from(targets).every((target) => target.classList.contains('hit-target-44'))).toBe(
+      true,
+    );
   });
 
   it('positions an expert commentary deep link after the case detail renders', () => {

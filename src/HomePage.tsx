@@ -125,7 +125,7 @@ export function HomePage({ onEnterWork }: HomePageProps) {
           {homeLinks.map(([label, href], index) => (
             <a
               aria-current={href === '/' ? 'page' : undefined}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+              className={`hit-target-44 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 index === 0
                   ? isDark
                     ? 'bg-white/10 text-white'
@@ -157,7 +157,7 @@ export function HomePage({ onEnterWork }: HomePageProps) {
             {isDark ? <Sun size={18} strokeWidth={2} /> : <Moon size={18} strokeWidth={2} />}
           </button>
           <a
-            className={`home-apply-cta rounded-full px-6 py-2.5 text-sm font-semibold transition-all ${
+            className={`home-apply-cta hit-target-44 rounded-full px-6 py-2.5 text-sm font-semibold transition-all ${
               isDark
                 ? 'bg-white text-[#0b1110] hover:bg-[#dff7f1] hover:shadow-lg hover:shadow-cyan-300/20'
                 : 'bg-[#0f1b19] text-white hover:bg-[#18312d] hover:shadow-lg hover:shadow-[#18312d]/20'

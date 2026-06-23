@@ -22,7 +22,7 @@ function isCurrentPath(currentPath: string, href: string) {
   return false;
 }
 
-function shouldHandleInternalNavigation(event: MouseEvent<HTMLAnchorElement>) {
+function shouldHandleInternalNavigation(event: MouseEvent) {
   return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
 }
 
@@ -58,8 +58,19 @@ export function ProductShell({ currentPath, children }: ProductShellProps) {
     navigate(href);
   };
 
+  const handleContentNavigation = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.defaultPrevented || !shouldHandleInternalNavigation(event)) return;
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const link = target.closest<HTMLAnchorElement>('a[href]');
+    const href = link?.getAttribute('href');
+    if (!href?.startsWith('/') || link?.closest('.product-shell-header')) return;
+    event.preventDefault();
+    navigate(href);
+  };
+
   return (
-    <div className="product-app">
+    <div className="product-app" onClick={handleContentNavigation}>
       <a className="skip-link" href="#main-content">
         跳到主要内容
       </a>
@@ -87,7 +98,7 @@ export function ProductShell({ currentPath, children }: ProductShellProps) {
             </a>
           ))}
           <a
-            className="product-shell-apply"
+            className="product-shell-apply product-shell-apply-mobile"
             href="/apply?source=global"
             onClick={(event) => handleNavigation(event, '/apply?source=global')}
           >
@@ -104,6 +115,13 @@ export function ProductShell({ currentPath, children }: ProductShellProps) {
           >
             {isDark ? <Sun aria-hidden="true" size={18} /> : <Moon aria-hidden="true" size={18} />}
           </button>
+          <a
+            className="product-shell-apply product-shell-apply-desktop"
+            href="/apply?source=global"
+            onClick={(event) => handleNavigation(event, '/apply?source=global')}
+          >
+            申请内测
+          </a>
           <button
             aria-controls="product-shell-navigation"
             aria-expanded={menuOpen}
