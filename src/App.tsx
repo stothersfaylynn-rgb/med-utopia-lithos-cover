@@ -6,6 +6,7 @@ import { CaseDetailPage } from './pages/CaseDetailPage';
 import { CasesPage } from './pages/CasesPage';
 import { ChallengeDetailPage } from './pages/ChallengeDetailPage';
 import { ChallengesPage } from './pages/ChallengesPage';
+import { CuratorsPage } from './pages/CuratorsPage';
 import { ProductGallery } from './ProductGallery';
 import { navigate, parseRoute, type AppRoute } from './router';
 
@@ -48,6 +49,10 @@ export default function App() {
 
   if (route.name === 'challenges') {
     return <ChallengesPage search={route.search} />;
+  }
+
+  if (route.name === 'curators') {
+    return <CuratorsPage />;
   }
 
   if (route.name === 'apply') {

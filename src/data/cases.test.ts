@@ -92,6 +92,14 @@ describe('case records', () => {
     ]);
   });
 
+  it('links every case to its approved curator', () => {
+    expect(cases.map(({ id, curatorSlug }) => ({ id, curatorSlug }))).toEqual([
+      { id: 'case-001', curatorSlug: 'zhou-heng' },
+      { id: 'case-002', curatorSlug: 'lin-yi' },
+      { id: 'case-003', curatorSlug: 'chen-xu' },
+    ]);
+  });
+
   it('contains no deferred feature language', () => {
     const serialized = JSON.stringify(cases);
     for (const forbidden of ['登录', '支付', '上传', '聊天', '人才市场', '一键诊断']) {

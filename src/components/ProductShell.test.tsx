@@ -75,6 +75,16 @@ describe('ProductShell', () => {
     expect(nav?.querySelector('a[href="/cases"]')?.getAttribute('aria-current')).toBeNull();
   });
 
+  it('marks expert curation current only on the approved index route', () => {
+    renderShell('/curators');
+    const nav = host.querySelector('nav[aria-label="主导航"]');
+
+    expect(nav?.querySelector('a[href="/curators"]')?.getAttribute('aria-current')).toBe(
+      'page',
+    );
+    expect(nav?.querySelector('a[href="/cases"]')?.getAttribute('aria-current')).toBeNull();
+  });
+
   it('uses the global theme control with a 44px token target', () => {
     renderShell();
     const themeButton = host.querySelector<HTMLButtonElement>('.product-shell-theme');

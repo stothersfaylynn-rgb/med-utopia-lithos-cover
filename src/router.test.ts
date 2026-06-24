@@ -18,6 +18,8 @@ describe('parseRoute', () => {
       { name: 'challenges', search: '?category=临床推理' },
     ],
     ['/challenges/', '', { name: 'challenges', search: '' }],
+    ['/curators', '', { name: 'curators' }],
+    ['/curators/', '', { name: 'curators' }],
     [
       '/cases/acute-aortic-dissection-triage',
       '',
@@ -61,6 +63,7 @@ describe('parseRoute', () => {
         type: 'contributor',
         caseSlug: 'acute-aortic-dissection-triage',
         challengeSlug: null,
+        expertSlug: null,
         status: null,
       },
     });
@@ -74,6 +77,7 @@ describe('parseRoute', () => {
         type: null,
         caseSlug: null,
         challengeSlug: null,
+        expertSlug: null,
         status: 'success',
       },
     });
@@ -92,12 +96,29 @@ describe('parseRoute', () => {
         type: 'challenge',
         caseSlug: null,
         challengeSlug: 'triage-reasoning-aortic-dissection',
+        expertSlug: null,
         status: null,
       },
     });
   });
 
-  it.each(['/login', '/upload', '/cases/one/two', '/challenges/one/two'])(
+  it('parses approved expert curation application context', () => {
+    expect(
+      parseRoute('/apply', '?source=curators&type=curation&expert=zhou-heng'),
+    ).toEqual({
+      name: 'apply',
+      query: {
+        source: 'curators',
+        type: 'curation',
+        caseSlug: null,
+        challengeSlug: null,
+        expertSlug: 'zhou-heng',
+        status: null,
+      },
+    });
+  });
+
+  it.each(['/login', '/upload', '/cases/one/two', '/challenges/one/two', '/curators/zhou-heng'])(
     'rejects out-of-scope route %s',
     (path) => {
       expect(parseRoute(path)).toEqual({ name: 'not-found' });

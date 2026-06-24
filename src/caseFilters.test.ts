@@ -6,7 +6,7 @@ describe('case filters', () => {
   it('returns empty filters and search for an empty query', () => {
     const filters = parseCaseFilters('');
 
-    expect(filters).toEqual({ department: '', risk: '', difficulty: '' });
+    expect(filters).toEqual({ department: '', risk: '', difficulty: '', curator: '' });
     expect(buildCaseSearch(filters)).toBe('');
   });
 
@@ -33,13 +33,13 @@ describe('case filters', () => {
   it('clears invalid enum values before filtering or serialization', () => {
     const filters = parseCaseFilters('?department=未知&risk=过度处置&difficulty=高级');
 
-    expect(filters).toEqual({ department: '', risk: '过度处置', difficulty: '' });
+    expect(filters).toEqual({ department: '', risk: '过度处置', difficulty: '', curator: '' });
     expect(filterCases(cases, filters).map(({ id }) => id)).toEqual(['case-002']);
     expect(buildCaseSearch(filters)).toBe(
       '?risk=%E8%BF%87%E5%BA%A6%E5%A4%84%E7%BD%AE',
     );
     expect(
-      buildCaseSearch({ department: '未知', risk: '', difficulty: '高级' }),
+      buildCaseSearch({ department: '未知', risk: '', difficulty: '高级', curator: '' }),
     ).toBe('');
   });
 
@@ -47,5 +47,26 @@ describe('case filters', () => {
     const filters = parseCaseFilters('?department=急诊医学&difficulty=基础');
 
     expect(filterCases(cases, filters)).toEqual([]);
+  });
+
+  it('filters by an approved curator and preserves it in stable search', () => {
+    const filters = parseCaseFilters('?curator=zhou-heng');
+
+    expect(filters).toEqual({
+      department: '',
+      risk: '',
+      difficulty: '',
+      curator: 'zhou-heng',
+    });
+    expect(filterCases(cases, filters).map(({ id }) => id)).toEqual(['case-001']);
+    expect(buildCaseSearch(filters)).toBe('?curator=zhou-heng');
+  });
+
+  it('clears an unknown curator before filtering or serialization', () => {
+    const filters = parseCaseFilters('?curator=unknown-expert');
+
+    expect(filters.curator).toBe('');
+    expect(filterCases(cases, filters)).toHaveLength(3);
+    expect(buildCaseSearch(filters)).toBe('');
   });
 });

@@ -111,6 +111,18 @@ describe('ApplyPage', () => {
     ).toBe(false);
   });
 
+  it('shows expert context and preselects only the expert curation module', () => {
+    renderApply('?source=curators&type=curation&expert=zhou-heng');
+
+    expect(host.textContent).toContain('来自策展：周衡（Mock）');
+    expect(
+      host.querySelector<HTMLInputElement>('input[name="modules"][value="专家策展"]')?.checked,
+    ).toBe(true);
+    expect(
+      host.querySelector<HTMLInputElement>('input[name="modules"][value="避雷案例"]')?.checked,
+    ).toBe(false);
+  });
+
   it('announces validation and focuses the first invalid field', () => {
     renderApply();
     const form = host.querySelector('form');
@@ -187,5 +199,29 @@ describe('ApplyPage', () => {
     );
     expect(host.querySelector('main#main-content a[href="/challenges"]')).not.toBeNull();
     expect(host.textContent).toContain('继续浏览挑战');
+  });
+
+  it('preserves expert context through submission and returns to curators', () => {
+    renderApply('?source=curators&type=curation&expert=zhou-heng');
+
+    changeControl('select[name="identity"]', '临床医生');
+    changeControl('input[name="school"]', '理想医学院');
+    changeControl('input[name="specialty"]', '急诊医学');
+    changeControl('input[name="phone"]', '13800000000');
+
+    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
+    act(() => consent?.click());
+    act(() => {
+      host
+        .querySelector('form')
+        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    });
+
+    expect(fetch).not.toHaveBeenCalled();
+    expect(`${window.location.pathname}${window.location.search}`).toBe(
+      '/apply?status=success&source=curators&type=curation&expert=zhou-heng',
+    );
+    expect(host.querySelector('main#main-content a[href="/curators"]')).not.toBeNull();
+    expect(host.textContent).toContain('继续浏览策展');
   });
 });

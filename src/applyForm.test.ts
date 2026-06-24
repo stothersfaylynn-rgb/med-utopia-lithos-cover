@@ -65,6 +65,7 @@ describe('apply form contract', () => {
       type: 'contributor',
       caseSlug: 'acute-aortic-dissection-triage',
       challengeSlug: null,
+      expertSlug: null,
     });
   });
 
@@ -78,6 +79,19 @@ describe('apply form contract', () => {
       type: 'challenge',
       caseSlug: null,
       challengeSlug: 'triage-reasoning-aortic-dissection',
+      expertSlug: null,
+    });
+  });
+
+  it('reads stable expert curation application context', () => {
+    expect(
+      getApplyContext('?source=curators&type=curation&expert=zhou-heng&profile=private'),
+    ).toEqual({
+      source: 'curators',
+      type: 'curation',
+      caseSlug: null,
+      challengeSlug: null,
+      expertSlug: 'zhou-heng',
     });
   });
 });

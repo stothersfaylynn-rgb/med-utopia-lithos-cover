@@ -380,7 +380,7 @@ describe('Med-Utopia cover', () => {
     expect(
       container.querySelector('nav[aria-label="主导航"] a[href="/challenges"]'),
     ).not.toBeNull();
-    expect(container.querySelector('.work-slab a[href="/curators"]')).toBeNull();
+    expect(container.querySelector('.work-slab a[href="/curators"]')).not.toBeNull();
     expect(container.querySelector('.work-slab a[href="/aesthetic-engine"]')).toBeNull();
   });
 

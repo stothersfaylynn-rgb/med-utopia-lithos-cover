@@ -15,6 +15,7 @@ const workDestinations: Record<string, string> = {
   避雷案例: '/cases',
   专家点评: '/cases/acute-aortic-dissection-triage#expert-commentary',
   学术挑战: '/challenges',
+  专家策展: '/curators',
 };
 
 const topNavDestinations: Record<string, string> = {

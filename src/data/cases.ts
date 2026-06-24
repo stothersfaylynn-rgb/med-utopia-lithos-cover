@@ -19,6 +19,7 @@ export type CaseRecord = {
   evidence: string[];
   principles: string[];
   relatedChallengeSlug: string;
+  curatorSlug: 'zhou-heng' | 'lin-yi' | 'chen-xu';
 };
 
 export const cases: readonly CaseRecord[] = [
@@ -54,6 +55,7 @@ export const cases: readonly CaseRecord[] = [
     ],
     principles: ['高风险信号优先识别。', '分流流程优先于检查顺序。', '初始分类必须允许被新证据修正。'],
     relatedChallengeSlug: 'triage-reasoning-aortic-dissection',
+    curatorSlug: 'zhou-heng',
   },
   {
     id: 'case-002',
@@ -87,6 +89,7 @@ export const cases: readonly CaseRecord[] = [
     ],
     principles: ['先确定时间窗。', '先寻找感染来源。', '用药强度必须对应证据强度。'],
     relatedChallengeSlug: 'literature-review-postoperative-fever',
+    curatorSlug: 'lin-yi',
   },
   {
     id: 'case-003',
@@ -120,6 +123,7 @@ export const cases: readonly CaseRecord[] = [
     ],
     principles: ['先评估起始风险。', '同时记录数值与速度。', '监测频率必须支持及时纠偏。'],
     relatedChallengeSlug: 'case-curation-hyponatremia',
+    curatorSlug: 'chen-xu',
   },
 ];
 

@@ -128,6 +128,15 @@ describe('CasesPage', () => {
     expect(host.querySelectorAll('article[data-case-id]')).toHaveLength(3);
   });
 
+  it('shows only the approved curator case without changing the archive layout', () => {
+    renderPage('?curator=zhou-heng');
+
+    expect(host.querySelectorAll('article[data-case-id]')).toHaveLength(1);
+    expect(host.textContent).toContain('急诊胸痛中的夹层警讯为何被忽略');
+    expect(host.querySelector('[aria-live="polite"]')?.textContent).toContain('共 1 条');
+    expect(host.querySelector('.case-archive-heading')).not.toBeNull();
+  });
+
   it('keeps deferred controls out of the cases page', () => {
     renderPage();
 
