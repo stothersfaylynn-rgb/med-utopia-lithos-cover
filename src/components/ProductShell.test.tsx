@@ -79,9 +79,9 @@ describe('ProductShell', () => {
     renderShell();
     const themeButton = host.querySelector<HTMLButtonElement>('.product-shell-theme');
 
-    expect(themeButton?.getAttribute('aria-label')).toBe('切换为深色主题');
-    act(() => themeButton?.click());
-    expect(localStorage.getItem('med-utopia-theme')).toBe('dark');
     expect(themeButton?.getAttribute('aria-label')).toBe('切换为浅色主题');
+    act(() => themeButton?.click());
+    expect(localStorage.getItem('med-utopia-theme')).toBe('light');
+    expect(themeButton?.getAttribute('aria-label')).toBe('切换为深色主题');
   });
 });

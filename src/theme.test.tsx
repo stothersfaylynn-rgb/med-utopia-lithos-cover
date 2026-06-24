@@ -54,19 +54,16 @@ describe('ThemeProvider', () => {
     expect(document.documentElement.style.colorScheme).toBe('dark');
   });
 
-  it.each([
-    [true, 'dark'],
-    [false, 'light'],
-  ] as const)('uses the system preference when dark matching is %s', (matches, expected) => {
-    const matchMedia = vi.fn(() => ({ matches }));
+  it('defaults to dark when no theme preference has been saved', () => {
+    const matchMedia = vi.fn(() => ({ matches: false }));
     vi.stubGlobal('matchMedia', matchMedia);
 
     renderProvider();
 
-    expect(matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
-    expect(host.textContent).toBe(expected);
-    expect(document.documentElement.dataset.theme).toBe(expected);
-    expect(document.documentElement.style.colorScheme).toBe(expected);
+    expect(matchMedia).not.toHaveBeenCalled();
+    expect(host.textContent).toBe('dark');
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(document.documentElement.style.colorScheme).toBe('dark');
   });
 
   it('toggles only between light and dark and persists each choice', () => {
@@ -74,14 +71,16 @@ describe('ThemeProvider', () => {
     renderProvider();
     const button = host.querySelector('button');
 
-    act(() => button?.click());
     expect(host.textContent).toBe('dark');
-    expect(localStorage.getItem('med-utopia-theme')).toBe('dark');
-    expect(document.documentElement.dataset.theme).toBe('dark');
 
     act(() => button?.click());
     expect(host.textContent).toBe('light');
     expect(localStorage.getItem('med-utopia-theme')).toBe('light');
     expect(document.documentElement.dataset.theme).toBe('light');
+
+    act(() => button?.click());
+    expect(host.textContent).toBe('dark');
+    expect(localStorage.getItem('med-utopia-theme')).toBe('dark');
+    expect(document.documentElement.dataset.theme).toBe('dark');
   });
 });
