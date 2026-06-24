@@ -75,6 +75,23 @@ describe('case records', () => {
     expect(getCaseBySlug('unknown-case')).toBeUndefined();
   });
 
+  it('links every case to its approved academic challenge', () => {
+    expect(cases.map(({ id, relatedChallengeSlug }) => ({ id, relatedChallengeSlug }))).toEqual([
+      {
+        id: 'case-001',
+        relatedChallengeSlug: 'triage-reasoning-aortic-dissection',
+      },
+      {
+        id: 'case-002',
+        relatedChallengeSlug: 'literature-review-postoperative-fever',
+      },
+      {
+        id: 'case-003',
+        relatedChallengeSlug: 'case-curation-hyponatremia',
+      },
+    ]);
+  });
+
   it('contains no deferred feature language', () => {
     const serialized = JSON.stringify(cases);
     for (const forbidden of ['登录', '支付', '上传', '聊天', '人才市场', '一键诊断']) {

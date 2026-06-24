@@ -113,8 +113,15 @@ export function CaseDetailPage({ caseSlug }: { caseSlug: string }) {
           <div>
             <h2>参与案例内容共建</h2>
             <p>如果你愿意参与病例整理、证据校对或专业复核，可以登记参与意向。</p>
+            <a
+              className="case-detail-related-link"
+              href={`/challenges/${record.relatedChallengeSlug}`}
+            >
+              进入相关学术挑战 →
+            </a>
           </div>
           <a
+            className="case-detail-apply-link"
             href={`/apply?source=case-detail&type=contributor&case=${record.slug}`}
           >
             申请参与内容共建

@@ -13,6 +13,12 @@ describe('parseRoute', () => {
     ['/cases', '?department=急诊医学', { name: 'cases', search: '?department=急诊医学' }],
     ['/cases/', '', { name: 'cases', search: '' }],
     [
+      '/challenges',
+      '?category=临床推理',
+      { name: 'challenges', search: '?category=临床推理' },
+    ],
+    ['/challenges/', '', { name: 'challenges', search: '' }],
+    [
       '/cases/acute-aortic-dissection-triage',
       '',
       { name: 'case-detail', caseSlug: 'acute-aortic-dissection-triage' },
@@ -21,6 +27,22 @@ describe('parseRoute', () => {
       '/cases/acute%2Daortic%2Ddissection%2Dtriage/',
       '',
       { name: 'case-detail', caseSlug: 'acute-aortic-dissection-triage' },
+    ],
+    [
+      '/challenges/triage-reasoning-aortic-dissection',
+      '',
+      {
+        name: 'challenge-detail',
+        challengeSlug: 'triage-reasoning-aortic-dissection',
+      },
+    ],
+    [
+      '/challenges/triage%2Dreasoning%2Daortic%2Ddissection/',
+      '',
+      {
+        name: 'challenge-detail',
+        challengeSlug: 'triage-reasoning-aortic-dissection',
+      },
     ],
   ])('parses %s', (pathname, search, expected) => {
     expect(parseRoute(pathname, search)).toEqual(expected);
@@ -38,6 +60,7 @@ describe('parseRoute', () => {
         source: 'case-detail',
         type: 'contributor',
         caseSlug: 'acute-aortic-dissection-triage',
+        challengeSlug: null,
         status: null,
       },
     });
@@ -50,12 +73,31 @@ describe('parseRoute', () => {
         source: null,
         type: null,
         caseSlug: null,
+        challengeSlug: null,
         status: 'success',
       },
     });
   });
 
-  it.each(['/challenges', '/login', '/upload', '/cases/one/two'])(
+  it('parses approved academic challenge application context', () => {
+    expect(
+      parseRoute(
+        '/apply',
+        '?source=challenge-detail&type=challenge&challenge=triage-reasoning-aortic-dissection',
+      ),
+    ).toEqual({
+      name: 'apply',
+      query: {
+        source: 'challenge-detail',
+        type: 'challenge',
+        caseSlug: null,
+        challengeSlug: 'triage-reasoning-aortic-dissection',
+        status: null,
+      },
+    });
+  });
+
+  it.each(['/login', '/upload', '/cases/one/two', '/challenges/one/two'])(
     'rejects out-of-scope route %s',
     (path) => {
       expect(parseRoute(path)).toEqual({ name: 'not-found' });

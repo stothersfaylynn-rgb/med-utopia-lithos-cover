@@ -64,6 +64,20 @@ describe('apply form contract', () => {
       source: 'case-detail',
       type: 'contributor',
       caseSlug: 'acute-aortic-dissection-triage',
+      challengeSlug: null,
+    });
+  });
+
+  it('reads stable academic challenge application context', () => {
+    expect(
+      getApplyContext(
+        '?source=challenge-detail&type=challenge&challenge=triage-reasoning-aortic-dissection&answer=private',
+      ),
+    ).toEqual({
+      source: 'challenge-detail',
+      type: 'challenge',
+      caseSlug: null,
+      challengeSlug: 'triage-reasoning-aortic-dissection',
     });
   });
 });

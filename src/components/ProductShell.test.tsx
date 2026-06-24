@@ -65,6 +65,16 @@ describe('ProductShell', () => {
     expect(document.activeElement).toBe(menuButton);
   });
 
+  it('marks academic challenges current on list and detail routes', () => {
+    renderShell('/challenges/triage-reasoning-aortic-dissection');
+    const nav = host.querySelector('nav[aria-label="主导航"]');
+
+    expect(nav?.querySelector('a[href="/challenges"]')?.getAttribute('aria-current')).toBe(
+      'page',
+    );
+    expect(nav?.querySelector('a[href="/cases"]')?.getAttribute('aria-current')).toBeNull();
+  });
+
   it('uses the global theme control with a 44px token target', () => {
     renderShell();
     const themeButton = host.querySelector<HTMLButtonElement>('.product-shell-theme');

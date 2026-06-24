@@ -76,6 +76,11 @@ describe('CaseDetailPage', () => {
         'a[href="/apply?source=case-detail&type=contributor&case=acute-aortic-dissection-triage"]',
       ),
     ).not.toBeNull();
+    expect(
+      host.querySelector(
+        'a[href="/challenges/triage-reasoning-aortic-dissection"]',
+      ),
+    ).not.toBeNull();
   });
 
   it('renders a recoverable not-found state', () => {

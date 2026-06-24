@@ -4,6 +4,8 @@ import { HomePage } from './HomePage';
 import { ApplyPage } from './pages/ApplyPage';
 import { CaseDetailPage } from './pages/CaseDetailPage';
 import { CasesPage } from './pages/CasesPage';
+import { ChallengeDetailPage } from './pages/ChallengeDetailPage';
+import { ChallengesPage } from './pages/ChallengesPage';
 import { ProductGallery } from './ProductGallery';
 import { navigate, parseRoute, type AppRoute } from './router';
 
@@ -38,6 +40,14 @@ export default function App() {
 
   if (route.name === 'case-detail') {
     return <CaseDetailPage caseSlug={route.caseSlug} />;
+  }
+
+  if (route.name === 'challenge-detail') {
+    return <ChallengeDetailPage challengeSlug={route.challengeSlug} />;
+  }
+
+  if (route.name === 'challenges') {
+    return <ChallengesPage search={route.search} />;
   }
 
   if (route.name === 'apply') {

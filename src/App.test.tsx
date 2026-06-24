@@ -363,7 +363,7 @@ describe('Med-Utopia cover', () => {
     expect(container.querySelectorAll('.work-slab.is-above, .work-slab.is-below, .work-slab.is-deep')).not.toHaveLength(0);
   });
 
-  it('links work controls only to existing first-loop surfaces', () => {
+  it('links work controls to the completed case and challenge surfaces', () => {
     renderApp('/work');
 
     expect(container.querySelector('.work-slab a[href="/cases"]')).not.toBeNull();
@@ -376,14 +376,12 @@ describe('Med-Utopia cover', () => {
     expect(
       container.querySelector('nav[aria-label="主导航"] a[href="/apply?source=work"]'),
     ).not.toBeNull();
-    expect(container.querySelector('.work-slab a[href="/challenges"]')).toBeNull();
+    expect(container.querySelector('.work-slab a[href="/challenges"]')).not.toBeNull();
+    expect(
+      container.querySelector('nav[aria-label="主导航"] a[href="/challenges"]'),
+    ).not.toBeNull();
     expect(container.querySelector('.work-slab a[href="/curators"]')).toBeNull();
     expect(container.querySelector('.work-slab a[href="/aesthetic-engine"]')).toBeNull();
-
-    const challengeButton = Array.from(
-      container.querySelectorAll<HTMLButtonElement>('nav[aria-label="主导航"] button'),
-    ).find((button) => button.textContent === '学术挑战');
-    expect(challengeButton?.disabled).toBe(true);
   });
 
   it('gives locked work navigation a non-visual 44px hit area', () => {

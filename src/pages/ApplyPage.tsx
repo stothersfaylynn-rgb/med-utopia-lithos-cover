@@ -7,6 +7,7 @@ import {
 } from '../applyForm';
 import { ProductShell } from '../components/ProductShell';
 import { getCaseBySlug } from '../data/cases';
+import { getChallengeBySlug } from '../data/challenges';
 import { navigate } from '../router';
 
 const identityOptions = [
@@ -41,8 +42,14 @@ function RequiredMark() {
 export function ApplyPage({ search }: { search: string }) {
   const context = getApplyContext(search);
   const sourceCase = context.caseSlug ? getCaseBySlug(context.caseSlug) : undefined;
+  const sourceChallenge = context.challengeSlug
+    ? getChallengeBySlug(context.challengeSlug)
+    : undefined;
   const success = new URLSearchParams(search).get('status') === 'success';
-  const [values, setValues] = useState<ApplyValues>(initialValues);
+  const [values, setValues] = useState<ApplyValues>(() => ({
+    ...initialValues,
+    modules: context.type === 'challenge' ? ['学术挑战'] : initialValues.modules,
+  }));
   const [errors, setErrors] = useState<ApplyErrors>({});
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -77,6 +84,7 @@ export function ApplyPage({ search }: { search: string }) {
     if (context.source) query.set('source', context.source);
     if (context.type) query.set('type', context.type);
     if (context.caseSlug) query.set('case', context.caseSlug);
+    if (context.challengeSlug) query.set('challenge', context.challengeSlug);
     navigate(`/apply?${query.toString()}`);
   };
 
@@ -88,7 +96,11 @@ export function ApplyPage({ search }: { search: string }) {
           <h1>申请已提交</h1>
           <p>我们已记录你的参与意向，后续仅就内测与内容共建事宜联系你。</p>
           <div className="apply-success-actions">
-            <a href="/cases">继续浏览案例</a>
+            {context.type === 'challenge' ? (
+              <a href="/challenges">继续浏览挑战</a>
+            ) : (
+              <a href="/cases">继续浏览案例</a>
+            )}
             <a href="/">返回首页</a>
           </div>
         </main>
@@ -106,6 +118,9 @@ export function ApplyPage({ search }: { search: string }) {
             留下你的身份、专业方向与参与意向。无需注册账号，我们只会就内测事宜与你联系。
           </p>
           {sourceCase ? <p className="apply-context">来自：{sourceCase.title}</p> : null}
+          {sourceChallenge ? (
+            <p className="apply-context">来自挑战：{sourceChallenge.title}</p>
+          ) : null}
           <p className="apply-file-notice">当前表单不接收病例、报告或其他医学文件。</p>
         </section>
 

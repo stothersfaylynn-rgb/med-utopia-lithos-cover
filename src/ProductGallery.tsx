@@ -14,10 +14,12 @@ const initialPointer: Point = { x: -999, y: -999 };
 const workDestinations: Record<string, string> = {
   避雷案例: '/cases',
   专家点评: '/cases/acute-aortic-dissection-triage#expert-commentary',
+  学术挑战: '/challenges',
 };
 
 const topNavDestinations: Record<string, string> = {
   案例库: '/cases',
+  学术挑战: '/challenges',
   申请内测: '/apply?source=work',
 };
 

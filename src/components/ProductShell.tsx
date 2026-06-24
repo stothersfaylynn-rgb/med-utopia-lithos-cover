@@ -19,6 +19,9 @@ const productLinks = [
 function isCurrentPath(currentPath: string, href: string) {
   if (href === '/') return currentPath === '/';
   if (href === '/cases') return currentPath === '/cases' || currentPath.startsWith('/cases/');
+  if (href === '/challenges') {
+    return currentPath === '/challenges' || currentPath.startsWith('/challenges/');
+  }
   return false;
 }
 

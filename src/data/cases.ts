@@ -18,6 +18,7 @@ export type CaseRecord = {
   expert: { name: string; specialty: string; comment: string };
   evidence: string[];
   principles: string[];
+  relatedChallengeSlug: string;
 };
 
 export const cases: readonly CaseRecord[] = [
@@ -52,6 +53,7 @@ export const cases: readonly CaseRecord[] = [
       '主动脉夹层早期识别病例复盘（Mock · 待编辑审核）',
     ],
     principles: ['高风险信号优先识别。', '分流流程优先于检查顺序。', '初始分类必须允许被新证据修正。'],
+    relatedChallengeSlug: 'triage-reasoning-aortic-dissection',
   },
   {
     id: 'case-002',
@@ -84,6 +86,7 @@ export const cases: readonly CaseRecord[] = [
       '围术期抗菌药管理病例复盘（Mock · 待编辑审核）',
     ],
     principles: ['先确定时间窗。', '先寻找感染来源。', '用药强度必须对应证据强度。'],
+    relatedChallengeSlug: 'literature-review-postoperative-fever',
   },
   {
     id: 'case-003',
@@ -116,6 +119,7 @@ export const cases: readonly CaseRecord[] = [
       '电解质治疗安全病例复盘（Mock · 待编辑审核）',
     ],
     principles: ['先评估起始风险。', '同时记录数值与速度。', '监测频率必须支持及时纠偏。'],
+    relatedChallengeSlug: 'case-curation-hyponatremia',
   },
 ];
 

@@ -97,6 +97,20 @@ describe('ApplyPage', () => {
     expect(host.textContent).not.toContain('聊天');
   });
 
+  it('shows challenge context and preselects only the academic challenge module', () => {
+    renderApply(
+      '?source=challenge-detail&type=challenge&challenge=triage-reasoning-aortic-dissection',
+    );
+
+    expect(host.textContent).toContain('来自挑战：你会在第几个信号出现时改变分诊路径？');
+    expect(
+      host.querySelector<HTMLInputElement>('input[name="modules"][value="学术挑战"]')?.checked,
+    ).toBe(true);
+    expect(
+      host.querySelector<HTMLInputElement>('input[name="modules"][value="避雷案例"]')?.checked,
+    ).toBe(false);
+  });
+
   it('announces validation and focuses the first invalid field', () => {
     renderApply();
     const form = host.querySelector('form');
@@ -147,5 +161,31 @@ describe('ApplyPage', () => {
     expect(host.querySelector('main#main-content a[href="/cases"]')).not.toBeNull();
     expect(host.querySelector('main#main-content a[href="/"]')).not.toBeNull();
     expect(host.querySelector('form')).toBeNull();
+  });
+
+  it('preserves challenge context through submission and returns to challenges', () => {
+    renderApply(
+      '?source=challenge-detail&type=challenge&challenge=triage-reasoning-aortic-dissection',
+    );
+
+    changeControl('select[name="identity"]', '临床医生');
+    changeControl('input[name="school"]', '理想医学院');
+    changeControl('input[name="specialty"]', '急诊医学');
+    changeControl('input[name="phone"]', '13800000000');
+
+    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
+    act(() => consent?.click());
+    act(() => {
+      host
+        .querySelector('form')
+        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    });
+
+    expect(fetch).not.toHaveBeenCalled();
+    expect(`${window.location.pathname}${window.location.search}`).toBe(
+      '/apply?status=success&source=challenge-detail&type=challenge&challenge=triage-reasoning-aortic-dissection',
+    );
+    expect(host.querySelector('main#main-content a[href="/challenges"]')).not.toBeNull();
+    expect(host.textContent).toContain('继续浏览挑战');
   });
 });
