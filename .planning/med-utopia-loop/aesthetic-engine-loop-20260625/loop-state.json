@@ -2,12 +2,12 @@
   "schema_version": 1,
   "loop_id": "aesthetic-engine-loop-20260625",
   "title": "美学引擎闭环",
-  "status": "active",
-  "current_task_id": "T07",
+  "status": "completed",
+  "current_task_id": null,
   "push_authorized": true,
   "pause": null,
   "created_at": "2026-06-25T02:14:48+00:00",
-  "updated_at": "2026-06-25T03:41:22+00:00",
+  "updated_at": "2026-06-25T04:02:58+00:00",
   "tasks": [
     {
       "id": "T01",
@@ -201,10 +201,12 @@
       "depends_on": [
         "T06"
       ],
-      "status": "in_progress",
+      "status": "passed",
       "attempts": 1,
-      "evidence": [],
-      "commit": null,
+      "evidence": [
+        "Commit 6a433f8 created; clean git archive verification passed with pnpm install --frozen-lockfile, pnpm test 19 files 140/140, token tests 3/3, token sync valid, and pnpm build."
+      ],
+      "commit": "6a433f8",
       "last_failure": null
     }
   ]
