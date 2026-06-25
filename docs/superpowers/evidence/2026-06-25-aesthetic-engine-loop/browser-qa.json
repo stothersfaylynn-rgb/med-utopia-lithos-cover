@@ -1,0 +1,400 @@
+{
+  "generatedAt": "2026-06-25T03:35:52.646Z",
+  "results": [
+    {
+      "name": "aesthetic-desktop-light",
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-desktop-light.png",
+      "consoleMessages": [],
+      "metrics": {
+        "h1Count": 1,
+        "h1": "敬请期待",
+        "sourceCount": 6,
+        "trailCount": 7,
+        "sourceLayout": [
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          }
+        ],
+        "trailLayout": [
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          }
+        ],
+        "trailVisualBounds": [
+          {
+            "width": 186,
+            "height": 247
+          },
+          {
+            "width": 169,
+            "height": 237
+          },
+          {
+            "width": 150,
+            "height": 225
+          },
+          {
+            "width": 169,
+            "height": 237
+          },
+          {
+            "width": 188,
+            "height": 249
+          },
+          {
+            "width": 192,
+            "height": 254
+          },
+          {
+            "width": 175,
+            "height": 245
+          }
+        ],
+        "hasFileInput": false,
+        "hasMainForm": false,
+        "hasGenerateText": false,
+        "horizontalOverflow": false,
+        "applyHeight": 44,
+        "applyWidth": 152,
+        "theme": "light",
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "aesthetic-desktop-dark",
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-desktop-dark.png",
+      "consoleMessages": [],
+      "metrics": {
+        "h1Count": 1,
+        "h1": "敬请期待",
+        "sourceCount": 6,
+        "trailCount": 7,
+        "sourceLayout": [
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          }
+        ],
+        "trailLayout": [
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          }
+        ],
+        "trailVisualBounds": [
+          {
+            "width": 186,
+            "height": 247
+          },
+          {
+            "width": 169,
+            "height": 237
+          },
+          {
+            "width": 150,
+            "height": 225
+          },
+          {
+            "width": 169,
+            "height": 237
+          },
+          {
+            "width": 188,
+            "height": 249
+          },
+          {
+            "width": 192,
+            "height": 254
+          },
+          {
+            "width": 175,
+            "height": 245
+          }
+        ],
+        "hasFileInput": false,
+        "hasMainForm": false,
+        "hasGenerateText": false,
+        "horizontalOverflow": false,
+        "applyHeight": 44,
+        "applyWidth": 152,
+        "theme": "dark",
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "aesthetic-mobile-light",
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-mobile-light.png",
+      "consoleMessages": [],
+      "metrics": {
+        "h1Count": 1,
+        "h1": "敬请期待",
+        "sourceCount": 6,
+        "trailCount": 0,
+        "sourceLayout": [
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          }
+        ],
+        "trailLayout": [],
+        "trailVisualBounds": [],
+        "hasFileInput": false,
+        "hasMainForm": false,
+        "hasGenerateText": false,
+        "horizontalOverflow": false,
+        "applyHeight": 44,
+        "applyWidth": 152,
+        "theme": "light",
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "aesthetic-mobile-dark",
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-mobile-dark.png",
+      "consoleMessages": [],
+      "metrics": {
+        "h1Count": 1,
+        "h1": "敬请期待",
+        "sourceCount": 6,
+        "trailCount": 0,
+        "sourceLayout": [
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          },
+          {
+            "offsetWidth": 121,
+            "offsetHeight": 181,
+            "ratio": 1.5
+          }
+        ],
+        "trailLayout": [],
+        "trailVisualBounds": [],
+        "hasFileInput": false,
+        "hasMainForm": false,
+        "hasGenerateText": false,
+        "horizontalOverflow": false,
+        "applyHeight": 44,
+        "applyWidth": 152,
+        "theme": "dark",
+        "reducedMotion": false
+      }
+    },
+    {
+      "name": "aesthetic-reduced-motion-dark",
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-reduced-motion-dark.png",
+      "consoleMessages": [],
+      "metrics": {
+        "h1Count": 1,
+        "h1": "敬请期待",
+        "sourceCount": 6,
+        "trailCount": 0,
+        "sourceLayout": [
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          },
+          {
+            "offsetWidth": 166,
+            "offsetHeight": 250,
+            "ratio": 1.51
+          }
+        ],
+        "trailLayout": [],
+        "trailVisualBounds": [],
+        "hasFileInput": false,
+        "hasMainForm": false,
+        "hasGenerateText": false,
+        "horizontalOverflow": false,
+        "applyHeight": 44,
+        "applyWidth": 152,
+        "theme": "dark",
+        "reducedMotion": true
+      }
+    }
+  ]
+}

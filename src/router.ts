@@ -4,6 +4,7 @@ export type ApplyQuery = {
   caseSlug: string | null;
   challengeSlug: string | null;
   expertSlug: string | null;
+  module: string | null;
   status: 'success' | null;
 };
 
@@ -15,6 +16,7 @@ export type AppRoute =
   | { name: 'challenges'; search: string }
   | { name: 'challenge-detail'; challengeSlug: string }
   | { name: 'curators' }
+  | { name: 'aesthetic-engine' }
   | { name: 'apply'; query: ApplyQuery }
   | { name: 'not-found' };
 
@@ -46,6 +48,10 @@ export function parseRoute(pathname: string, search = ''): AppRoute {
     return { name: 'curators' };
   }
 
+  if (normalizedPath === '/aesthetic-engine') {
+    return { name: 'aesthetic-engine' };
+  }
+
   const challengeMatch = normalizedPath.match(/^\/challenges\/([^/]+)$/);
   if (challengeMatch) {
     return {
@@ -64,6 +70,7 @@ export function parseRoute(pathname: string, search = ''): AppRoute {
         caseSlug: query.get('case'),
         challengeSlug: query.get('challenge'),
         expertSlug: query.get('expert'),
+        module: query.get('module'),
         status: query.get('status') === 'success' ? 'success' : null,
       },
     };

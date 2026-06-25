@@ -30,6 +30,7 @@ export function getApplyContext(search: string): {
   caseSlug: string | null;
   challengeSlug: string | null;
   expertSlug: string | null;
+  module: string | null;
 } {
   const query = new URLSearchParams(search);
 
@@ -39,5 +40,6 @@ export function getApplyContext(search: string): {
     caseSlug: query.get('case'),
     challengeSlug: query.get('challenge'),
     expertSlug: query.get('expert'),
+    module: query.get('module'),
   };
 }

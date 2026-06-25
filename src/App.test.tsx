@@ -237,6 +237,15 @@ describe('Med-Utopia cover', () => {
     ).toBe(true);
   });
 
+  it('routes aesthetic engine to a Coming Soon page instead of the unopened placeholder', () => {
+    renderApp('/aesthetic-engine');
+
+    expect(container.textContent).toContain('敬请期待');
+    expect(container.textContent).not.toContain('该页面暂未开放');
+    expect(container.querySelector('input[type="file"]')).toBeNull();
+    expect(container.querySelector('nav[aria-label="主导航"] a[href="/aesthetic-engine"]')?.getAttribute('aria-current')).toBe('page');
+  });
+
   it('opens the approved homepage mobile menu and closes it with Escape', () => {
     renderApp();
     const menuButton = container.querySelector<HTMLButtonElement>('button[aria-label="打开主菜单"]');
@@ -381,7 +390,7 @@ describe('Med-Utopia cover', () => {
       container.querySelector('nav[aria-label="主导航"] a[href="/challenges"]'),
     ).not.toBeNull();
     expect(container.querySelector('.work-slab a[href="/curators"]')).not.toBeNull();
-    expect(container.querySelector('.work-slab a[href="/aesthetic-engine"]')).toBeNull();
+    expect(container.querySelector('.work-slab a[href="/aesthetic-engine"]')).not.toBeNull();
   });
 
   it('gives locked work navigation a non-visual 44px hit area', () => {

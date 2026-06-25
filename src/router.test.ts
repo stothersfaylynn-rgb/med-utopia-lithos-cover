@@ -20,6 +20,8 @@ describe('parseRoute', () => {
     ['/challenges/', '', { name: 'challenges', search: '' }],
     ['/curators', '', { name: 'curators' }],
     ['/curators/', '', { name: 'curators' }],
+    ['/aesthetic-engine', '', { name: 'aesthetic-engine' }],
+    ['/aesthetic-engine/', '', { name: 'aesthetic-engine' }],
     [
       '/cases/acute-aortic-dissection-triage',
       '',
@@ -64,6 +66,7 @@ describe('parseRoute', () => {
         caseSlug: 'acute-aortic-dissection-triage',
         challengeSlug: null,
         expertSlug: null,
+        module: null,
         status: null,
       },
     });
@@ -78,6 +81,7 @@ describe('parseRoute', () => {
         caseSlug: null,
         challengeSlug: null,
         expertSlug: null,
+        module: null,
         status: 'success',
       },
     });
@@ -97,6 +101,7 @@ describe('parseRoute', () => {
         caseSlug: null,
         challengeSlug: 'triage-reasoning-aortic-dissection',
         expertSlug: null,
+        module: null,
         status: null,
       },
     });
@@ -113,17 +118,37 @@ describe('parseRoute', () => {
         caseSlug: null,
         challengeSlug: null,
         expertSlug: 'zhou-heng',
+        module: null,
         status: null,
       },
     });
   });
 
-  it.each(['/login', '/upload', '/cases/one/two', '/challenges/one/two', '/curators/zhou-heng'])(
-    'rejects out-of-scope route %s',
-    (path) => {
-      expect(parseRoute(path)).toEqual({ name: 'not-found' });
-    },
-  );
+  it('parses approved aesthetic-engine application context', () => {
+    expect(parseRoute('/apply', '?module=aesthetic-engine')).toEqual({
+      name: 'apply',
+      query: {
+        source: null,
+        type: null,
+        caseSlug: null,
+        challengeSlug: null,
+        expertSlug: null,
+        module: 'aesthetic-engine',
+        status: null,
+      },
+    });
+  });
+
+  it.each([
+    '/login',
+    '/upload',
+    '/cases/one/two',
+    '/challenges/one/two',
+    '/curators/zhou-heng',
+    '/aesthetic-engine/upload',
+  ])('rejects out-of-scope route %s', (path) => {
+    expect(parseRoute(path)).toEqual({ name: 'not-found' });
+  });
 });
 
 describe('navigate', () => {

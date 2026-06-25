@@ -23,6 +23,7 @@ function isCurrentPath(currentPath: string, href: string) {
     return currentPath === '/challenges' || currentPath.startsWith('/challenges/');
   }
   if (href === '/curators') return currentPath === '/curators';
+  if (href === '/aesthetic-engine') return currentPath === '/aesthetic-engine';
   return false;
 }
 

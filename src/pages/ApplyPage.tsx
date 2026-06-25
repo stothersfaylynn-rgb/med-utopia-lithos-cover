@@ -47,11 +47,14 @@ export function ApplyPage({ search }: { search: string }) {
     ? getChallengeBySlug(context.challengeSlug)
     : undefined;
   const sourceExpert = context.expertSlug ? getExpertBySlug(context.expertSlug) : undefined;
+  const sourceModule = context.module === 'aesthetic-engine' ? '美学引擎' : null;
   const success = new URLSearchParams(search).get('status') === 'success';
   const [values, setValues] = useState<ApplyValues>(() => ({
     ...initialValues,
     modules:
-      context.type === 'challenge'
+      sourceModule
+        ? [sourceModule]
+        : context.type === 'challenge'
         ? ['学术挑战']
         : context.type === 'curation' && sourceExpert
           ? ['专家策展']
@@ -93,6 +96,7 @@ export function ApplyPage({ search }: { search: string }) {
     if (context.caseSlug) query.set('case', context.caseSlug);
     if (context.challengeSlug) query.set('challenge', context.challengeSlug);
     if (context.expertSlug) query.set('expert', context.expertSlug);
+    if (context.module) query.set('module', context.module);
     navigate(`/apply?${query.toString()}`);
   };
 
@@ -104,7 +108,9 @@ export function ApplyPage({ search }: { search: string }) {
           <h1>申请已提交</h1>
           <p>我们已记录你的参与意向，后续仅就内测与内容共建事宜联系你。</p>
           <div className="apply-success-actions">
-            {context.type === 'curation' ? (
+            {context.module === 'aesthetic-engine' ? (
+              <a href="/aesthetic-engine">返回美学引擎</a>
+            ) : context.type === 'curation' ? (
               <a href="/curators">继续浏览策展</a>
             ) : context.type === 'challenge' ? (
               <a href="/challenges">继续浏览挑战</a>
@@ -132,6 +138,7 @@ export function ApplyPage({ search }: { search: string }) {
             <p className="apply-context">来自挑战：{sourceChallenge.title}</p>
           ) : null}
           {sourceExpert ? <p className="apply-context">来自策展：{sourceExpert.name}</p> : null}
+          {sourceModule ? <p className="apply-context">来自模块：{sourceModule}</p> : null}
           <p className="apply-file-notice">当前表单不接收病例、报告或其他医学文件。</p>
         </section>
 

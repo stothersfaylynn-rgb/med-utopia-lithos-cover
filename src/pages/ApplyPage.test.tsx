@@ -123,6 +123,18 @@ describe('ApplyPage', () => {
     ).toBe(false);
   });
 
+  it('shows aesthetic-engine context and preselects only the aesthetic module', () => {
+    renderApply('?module=aesthetic-engine');
+
+    expect(host.textContent).toContain('来自模块：美学引擎');
+    expect(
+      host.querySelector<HTMLInputElement>('input[name="modules"][value="美学引擎"]')?.checked,
+    ).toBe(true);
+    expect(
+      host.querySelector<HTMLInputElement>('input[name="modules"][value="避雷案例"]')?.checked,
+    ).toBe(false);
+  });
+
   it('announces validation and focuses the first invalid field', () => {
     renderApply();
     const form = host.querySelector('form');
@@ -223,5 +235,29 @@ describe('ApplyPage', () => {
     );
     expect(host.querySelector('main#main-content a[href="/curators"]')).not.toBeNull();
     expect(host.textContent).toContain('继续浏览策展');
+  });
+
+  it('preserves aesthetic-engine module context through submission and returns to the preview', () => {
+    renderApply('?module=aesthetic-engine');
+
+    changeControl('select[name="identity"]', '临床医生');
+    changeControl('input[name="school"]', '理想医学院');
+    changeControl('input[name="specialty"]', '医学汇报设计');
+    changeControl('input[name="phone"]', '13800000000');
+
+    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
+    act(() => consent?.click());
+    act(() => {
+      host
+        .querySelector('form')
+        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    });
+
+    expect(fetch).not.toHaveBeenCalled();
+    expect(`${window.location.pathname}${window.location.search}`).toBe(
+      '/apply?status=success&module=aesthetic-engine',
+    );
+    expect(host.querySelector('main#main-content a[href="/aesthetic-engine"]')).not.toBeNull();
+    expect(host.textContent).toContain('返回美学引擎');
   });
 });

@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "loop_id": "aesthetic-engine-loop-20260625",
+  "title": "美学引擎闭环",
+  "status": "active",
+  "current_task_id": "T07",
+  "push_authorized": true,
+  "pause": null,
+  "created_at": "2026-06-25T02:14:48+00:00",
+  "updated_at": "2026-06-25T03:41:22+00:00",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Stage Contract and Preview Approval",
+      "purpose": "Lock the aesthetic-engine Coming Soon stage and obtain approval for the reference-inspired image-trail direction before product UI code.",
+      "scope": [
+        ".planning/med-utopia-loop/aesthetic-engine-loop-20260625/**",
+        "docs/previews/aesthetic-engine-loop/**"
+      ],
+      "acceptance": [
+        "Live branch, HEAD, dirty files, checkpoint, product sources, design sources, and CodePen reference behavior are recorded.",
+        "The stage has explicit scope, exclusions, completion evidence, delayed-commit policy, and push authorization.",
+        "Desktop, mobile, and dual-theme preview images exist before any aesthetic-engine UI implementation.",
+        "The approved direction explicitly adapts to the existing Light and Dark semantic theme systems instead of hard-coding one dark aesthetic.",
+        "The approved motion direction uses a fixed 2:3 trail-card frame system based on the reference behavior, not image-native random dimensions.",
+        "The user explicitly approves the preview direction."
+      ],
+      "depends_on": [],
+      "status": "passed",
+      "attempts": 1,
+      "evidence": [
+        "用户确认可以按固定 2:3 卡片系统、Light/Dark 双主题适配方向继续；预览基准：direction-a-desktop.png、direction-a-mobile.png、direction-a-dual-theme-board.png、direction-b-fixed-card-system.png"
+      ],
+      "commit": "none",
+      "last_failure": null
+    },
+    {
+      "id": "T02",
+      "title": "Medical Theme Image Asset Pack",
+      "purpose": "Create and preserve the medical-themed image cards that will replace the reference page's generic trail images.",
+      "scope": [
+        "public/aesthetic-engine/**",
+        "docs/previews/aesthetic-engine-loop/**",
+        ".planning/med-utopia-loop/aesthetic-engine-loop-20260625/progress.md"
+      ],
+      "acceptance": [
+        "At least six themed raster assets exist in the workspace and are suitable for the cursor-trail effect.",
+        "Assets depict report structure, PPT reconstruction, research poster, evidence table, clinical decision path, and dossier material without patient faces or real records.",
+        "No project-referenced generated asset remains only under the default Codex generated-images folder.",
+        "Image filenames and usage are documented in loop progress."
+      ],
+      "depends_on": [
+        "T01"
+      ],
+      "status": "passed",
+      "attempts": 1,
+      "evidence": [
+        "Generated and copied six project-local 1024x1536 PNG assets under public/aesthetic-engine/: report-reconstruction, presentation-reconstruction, poster-grid, evidence-matrix, decision-path, dossier-cover"
+      ],
+      "commit": "none",
+      "last_failure": null
+    },
+    {
+      "id": "T03",
+      "title": "Aesthetic Engine Route Contract",
+      "purpose": "Make /aesthetic-engine a first-class Coming Soon route with correct navigation state and no upload semantics.",
+      "scope": [
+        "src/router.ts",
+        "src/router.test.ts",
+        "src/components/ProductShell.tsx",
+        "src/components/ProductShell.test.tsx",
+        "src/App.tsx",
+        "src/App.test.tsx"
+      ],
+      "acceptance": [
+        "RED proves /aesthetic-engine currently falls through to the unopened-route placeholder.",
+        "The exact route parses while malformed nested variants remain rejected.",
+        "The global navigation marks 美学引擎 current on /aesthetic-engine.",
+        "Existing routes remain green and no upload, generate, payment, login, chat, or delivery entry is introduced."
+      ],
+      "depends_on": [
+        "T02"
+      ],
+      "status": "passed",
+      "attempts": 1,
+      "evidence": [
+        "RED: focused route/shell/App tests failed because /aesthetic-engine was not routed, nav current state was absent, and App rendered unopened placeholder. GREEN: same focused command passed 3 files, 54/54 tests."
+      ],
+      "commit": "none",
+      "last_failure": null
+    },
+    {
+      "id": "T04",
+      "title": "Reference-Inspired Coming Soon Surface",
+      "purpose": "Implement the approved central 敬请期待 page with a restrained image-trail interaction based on the reference behavior.",
+      "scope": [
+        "src/pages/AestheticEnginePage.tsx",
+        "src/pages/AestheticEnginePage.test.tsx",
+        "src/App.tsx",
+        "src/App.test.tsx",
+        "src/product.css",
+        "src/motion.ts"
+      ],
+      "acceptance": [
+        "RED proves the page, central copy, image-trail assets, and no-upload boundary are absent before implementation.",
+        "The page renders one h1 containing 敬请期待 and the fixed Coming Soon explanation from the IA.",
+        "Pointer movement creates a bounded trail of themed images with distance/time throttling, rotation, scale, fade-out, and cleanup.",
+        "Every spawned trail item uses one fixed portrait frame size with object-fit cover; desktop targets the reference-like 200x300 proportion and mobile scales it down consistently.",
+        "Trail chaos is bounded by max simultaneous items, movement threshold, spawn interval, short lifetime, and z-index ordering.",
+        "Colors, borders, surfaces, text, and accents consume or match the existing Light/Dark semantic theme system.",
+        "The implementation materially matches the approved preview without copying unrelated reference content or adding a new animation dependency."
+      ],
+      "depends_on": [
+        "T03"
+      ],
+      "status": "passed",
+      "attempts": 1,
+      "evidence": [
+        "RED: AestheticEnginePage tests failed because data-page, six fixed source cards, and trail stage were absent. GREEN: focused page/App tests passed 2 files, 25/25 tests."
+      ],
+      "commit": "none",
+      "last_failure": null
+    },
+    {
+      "id": "T05",
+      "title": "Application Handoff and Work Entry",
+      "purpose": "Connect the Coming Soon page to the existing no-login application flow and make the work-gallery aesthetic entry reach the real page.",
+      "scope": [
+        "src/router.ts",
+        "src/router.test.ts",
+        "src/pages/ApplyPage.tsx",
+        "src/pages/ApplyPage.test.tsx",
+        "src/ProductGallery.tsx",
+        "src/App.test.tsx",
+        "src/product.css"
+      ],
+      "acceptance": [
+        "RED proves module=aesthetic-engine is not preserved by the application flow and the work-gallery aesthetic slab has no destination.",
+        "The only page action is an internal-test intention link to /apply?module=aesthetic-engine.",
+        "Apply shows the 美学引擎 source context, preselects the module, and preserves module context through local success.",
+        "/work keeps its locked choreography while the 美学引擎 slab reaches /aesthetic-engine."
+      ],
+      "depends_on": [
+        "T04"
+      ],
+      "status": "passed",
+      "attempts": 1,
+      "evidence": [
+        "RED: module=aesthetic-engine query/application context, page action, and /work destination were missing. GREEN: focused route/apply/page/App suite passed 5 files, 76/76 tests."
+      ],
+      "commit": "none",
+      "last_failure": null
+    },
+    {
+      "id": "T06",
+      "title": "Motion, Accessibility, and Responsive Verification",
+      "purpose": "Prove the page works across desktop/mobile, keyboard, dark/light themes, and reduced-motion without letting effects hide content.",
+      "scope": [
+        "src/pages/AestheticEnginePage.tsx",
+        "src/pages/AestheticEnginePage.test.tsx",
+        "src/product.css",
+        "docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/**"
+      ],
+      "acceptance": [
+        "Focused tests, full tests, token tests, TypeScript, production build, and git diff checks pass.",
+        "Browser QA covers /aesthetic-engine at desktop 1280x720 and mobile 390x844 in light and dark themes.",
+        "Light mode reads as a clinical white archive and dark mode reads as a dark clinical judgment archive, with all key text and controls contrast-safe.",
+        "Dynamic QA confirms trail cards remain uniform in size and do not overlap the central copy into an unreadable state during rapid pointer movement.",
+        "Reduced-motion stops continuous pointer trails and keeps the Coming Soon message and application link immediately visible.",
+        "The page has one h1, no horizontal overflow, no console errors, and mobile touch targets are at least 44px."
+      ],
+      "depends_on": [
+        "T05"
+      ],
+      "status": "passed",
+      "attempts": 1,
+      "evidence": [
+        "Final verification passed: pnpm test 19 files 140/140, token node tests 3/3, token sync valid, pnpm build, git diff --check, Chrome browser QA desktop/mobile Light/Dark and reduced-motion with fixed 2:3 card metrics."
+      ],
+      "commit": "none",
+      "last_failure": null
+    },
+    {
+      "id": "T07",
+      "title": "Dependency Closure, Exact Commit, and Push",
+      "purpose": "Update handoff records, commit only the approved stage allowlist, verify from clean HEAD, and push the current branch.",
+      "scope": [
+        "docs/HANDOFF.md",
+        ".codex/handoff/checkpoint.md",
+        ".planning/med-utopia-loop/aesthetic-engine-loop-20260625/**",
+        "docs/previews/aesthetic-engine-loop/**",
+        "docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/**",
+        "all files created or modified by T02-T06"
+      ],
+      "acceptance": [
+        "All previous Tasks are passed with fresh evidence.",
+        "The diff contains no unrelated dirty files and is staged with an exact allowlist.",
+        "The stage is committed once all checks pass, with clean-HEAD dependency closure verified.",
+        "The current branch is pushed successfully."
+      ],
+      "depends_on": [
+        "T06"
+      ],
+      "status": "in_progress",
+      "attempts": 1,
+      "evidence": [],
+      "commit": null,
+      "last_failure": null
+    }
+  ]
+}

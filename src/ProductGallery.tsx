@@ -16,6 +16,7 @@ const workDestinations: Record<string, string> = {
   专家点评: '/cases/acute-aortic-dissection-triage#expert-commentary',
   学术挑战: '/challenges',
   专家策展: '/curators',
+  美学引擎: '/aesthetic-engine',
 };
 
 const topNavDestinations: Record<string, string> = {

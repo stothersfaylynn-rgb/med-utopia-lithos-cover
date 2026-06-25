@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ProductShell } from './components/ProductShell';
 import { HomePage } from './HomePage';
 import { ApplyPage } from './pages/ApplyPage';
+import { AestheticEnginePage } from './pages/AestheticEnginePage';
 import { CaseDetailPage } from './pages/CaseDetailPage';
 import { CasesPage } from './pages/CasesPage';
 import { ChallengeDetailPage } from './pages/ChallengeDetailPage';
@@ -53,6 +54,10 @@ export default function App() {
 
   if (route.name === 'curators') {
     return <CuratorsPage />;
+  }
+
+  if (route.name === 'aesthetic-engine') {
+    return <AestheticEnginePage />;
   }
 
   if (route.name === 'apply') {

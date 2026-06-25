@@ -189,6 +189,271 @@ html.product-scroll-page #root {
   font-size: var(--typography-size-label);
 }
 
+.aesthetic-engine-page {
+  min-block-size: calc(100dvh - var(--navigation-height));
+  background: var(--color-background);
+  color: var(--color-foreground);
+  overflow: hidden;
+}
+
+.aesthetic-engine-stage {
+  position: relative;
+  display: grid;
+  min-block-size: calc(100dvh - var(--navigation-height));
+  place-items: center;
+  padding: var(--spacing-section-sm) var(--spacing-page-x);
+  isolation: isolate;
+}
+
+.aesthetic-engine-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(color-mix(in srgb, var(--color-border) 58%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-border) 58%, transparent) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, #000 0 52%, transparent 80%);
+  opacity: 0.46;
+}
+
+.aesthetic-engine-stage::before,
+.aesthetic-engine-stage::after {
+  position: absolute;
+  inset: var(--spacing-component-lg);
+  z-index: 1;
+  pointer-events: none;
+  content: '';
+  border: var(--border-default) solid color-mix(in srgb, var(--color-border) 82%, transparent);
+}
+
+.aesthetic-engine-stage::after {
+  inset: calc(var(--spacing-component-lg) + var(--spacing-inline-sm));
+  border-style: dashed;
+  opacity: 0.32;
+}
+
+.aesthetic-source-layer,
+.aesthetic-trail-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.aesthetic-trail-layer {
+  z-index: 4;
+}
+
+.aesthetic-trail-card {
+  position: absolute;
+  inline-size: clamp(7.5rem, 13vw, 12.5rem);
+  aspect-ratio: 2 / 3;
+  margin: 0;
+  overflow: hidden;
+  border: var(--border-default) solid color-mix(in srgb, var(--color-border) 82%, transparent);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+}
+
+.aesthetic-trail-card img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.aesthetic-source-card {
+  opacity: 0.82;
+  transform: translate(-50%, -50%) rotate(var(--source-rotation));
+}
+
+.aesthetic-source-card:nth-child(1) {
+  inset-block-start: 23%;
+  inset-inline-start: 22%;
+  --source-rotation: -9deg;
+}
+
+.aesthetic-source-card:nth-child(2) {
+  inset-block-start: 18%;
+  inset-inline-start: 50%;
+  --source-rotation: 4deg;
+}
+
+.aesthetic-source-card:nth-child(3) {
+  inset-block-start: 27%;
+  inset-inline-start: 78%;
+  --source-rotation: 10deg;
+}
+
+.aesthetic-source-card:nth-child(4) {
+  inset-block-start: 76%;
+  inset-inline-start: 22%;
+  --source-rotation: 8deg;
+}
+
+.aesthetic-source-card:nth-child(5) {
+  inset-block-start: 80%;
+  inset-inline-start: 52%;
+  --source-rotation: -4deg;
+}
+
+.aesthetic-source-card:nth-child(6) {
+  inset-block-start: 73%;
+  inset-inline-start: 79%;
+  --source-rotation: -10deg;
+}
+
+.aesthetic-trail-item {
+  inset-inline-start: var(--trail-x);
+  inset-block-start: var(--trail-y);
+  z-index: 5;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--trail-rotation)) scale(var(--trail-scale));
+  animation: aestheticTrailFade var(--motion-duration-work) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.aesthetic-copy {
+  position: relative;
+  z-index: 6;
+  display: grid;
+  max-inline-size: min(42rem, 100%);
+  gap: var(--spacing-component-sm);
+  justify-items: center;
+  padding: var(--spacing-component-lg);
+  background:
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-background) 92%, transparent) 0 58%,
+      transparent 78%
+    );
+  text-align: center;
+}
+
+.aesthetic-eyebrow {
+  margin: 0;
+  color: var(--color-primary);
+  font-family: var(--typography-font-meta);
+  font-size: var(--typography-size-label);
+}
+
+.aesthetic-copy h1 {
+  margin: 0;
+  font-family: var(--typography-font-article);
+  font-size: clamp(var(--typography-size-page-title), 8vw, var(--typography-size-display));
+  line-height: var(--typography-line-heading);
+  letter-spacing: var(--typography-tracking-display);
+}
+
+.aesthetic-copy p:not(.aesthetic-eyebrow) {
+  max-inline-size: 42rem;
+  margin: 0;
+  color: var(--color-foreground-secondary);
+  font-size: var(--typography-size-body);
+  line-height: var(--typography-line-body);
+}
+
+.aesthetic-apply-link {
+  display: inline-flex;
+  min-block-size: var(--primitive-size-control);
+  align-items: center;
+  justify-content: center;
+  margin-block-start: var(--spacing-inline-sm);
+  padding-inline: var(--button-padding-x);
+  border-radius: var(--button-radius);
+  background: var(--button-primary-background);
+  color: var(--button-primary-foreground);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  text-decoration: none;
+}
+
+.aesthetic-apply-link:hover {
+  background: var(--button-primary-background-hover);
+}
+
+@keyframes aestheticTrailFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--trail-rotation)) scale(0.86);
+  }
+
+  16% {
+    opacity: 0.94;
+    transform: translate(-50%, -50%) rotate(var(--trail-rotation)) scale(var(--trail-scale));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -56%) rotate(var(--trail-rotation)) scale(0.9);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .aesthetic-engine-stage {
+    min-block-size: calc(100dvh - var(--navigation-height));
+    padding: var(--spacing-component-lg) var(--spacing-page-x-compact);
+  }
+
+  .aesthetic-engine-stage::before {
+    inset: var(--spacing-component-sm);
+  }
+
+  .aesthetic-engine-stage::after {
+    inset: calc(var(--spacing-component-sm) + var(--spacing-inline-sm));
+  }
+
+  .aesthetic-trail-card {
+    inline-size: clamp(6.4rem, 31vw, 9.25rem);
+  }
+
+  .aesthetic-source-card {
+    opacity: 0.78;
+  }
+
+  .aesthetic-source-card:nth-child(1) {
+    inset-block-start: 19%;
+    inset-inline-start: 21%;
+  }
+
+  .aesthetic-source-card:nth-child(2) {
+    inset-block-start: 16%;
+    inset-inline-start: 50%;
+  }
+
+  .aesthetic-source-card:nth-child(3) {
+    inset-block-start: 20%;
+    inset-inline-start: 79%;
+  }
+
+  .aesthetic-source-card:nth-child(4) {
+    inset-block-start: 79%;
+    inset-inline-start: 19%;
+  }
+
+  .aesthetic-source-card:nth-child(5) {
+    inset-block-start: 82%;
+    inset-inline-start: 50%;
+  }
+
+  .aesthetic-source-card:nth-child(6) {
+    inset-block-start: 79%;
+    inset-inline-start: 80%;
+  }
+
+  .aesthetic-copy {
+    gap: var(--spacing-inline-sm);
+    padding: var(--spacing-component);
+  }
+
+  .aesthetic-copy h1 {
+    font-size: var(--typography-size-page-title);
+  }
+}
+
 .cases-page {
   inline-size: 100%;
   padding: var(--spacing-component-lg) var(--spacing-page-x) var(--spacing-section);

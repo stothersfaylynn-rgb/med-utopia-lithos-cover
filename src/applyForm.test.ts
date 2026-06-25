@@ -66,6 +66,7 @@ describe('apply form contract', () => {
       caseSlug: 'acute-aortic-dissection-triage',
       challengeSlug: null,
       expertSlug: null,
+      module: null,
     });
   });
 
@@ -80,6 +81,7 @@ describe('apply form contract', () => {
       caseSlug: null,
       challengeSlug: 'triage-reasoning-aortic-dissection',
       expertSlug: null,
+      module: null,
     });
   });
 
@@ -92,6 +94,18 @@ describe('apply form contract', () => {
       caseSlug: null,
       challengeSlug: null,
       expertSlug: 'zhou-heng',
+      module: null,
+    });
+  });
+
+  it('reads stable aesthetic-engine module application context', () => {
+    expect(getApplyContext('?module=aesthetic-engine&upload=private.pdf')).toEqual({
+      source: null,
+      type: null,
+      caseSlug: null,
+      challengeSlug: null,
+      expertSlug: null,
+      module: 'aesthetic-engine',
     });
   });
 });
