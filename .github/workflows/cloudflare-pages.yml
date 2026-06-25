@@ -45,13 +45,9 @@ jobs:
 
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != ''
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
-          accountId: ce8252d67fbf479d9b9e1d5812402efb
-          wranglerVersion: "4"
-          packageManager: npm
-          command: pages deploy dist --project-name=med-utopia --branch=${{ github.ref_name }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ce8252d67fbf479d9b9e1d5812402efb
+        run: npx --yes wrangler@4 pages deploy "$GITHUB_WORKSPACE/dist" --project-name=med-utopia --branch="${{ github.ref_name }}"
 
       - name: Cloudflare token not configured
         if: env.CLOUDFLARE_API_TOKEN == ''
