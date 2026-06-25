@@ -234,11 +234,9 @@ html.product-scroll-page #root {
   opacity: 0.32;
 }
 
-.aesthetic-source-layer,
 .aesthetic-trail-layer {
   position: absolute;
   inset: 0;
-  z-index: 2;
   pointer-events: none;
 }
 
@@ -263,47 +261,6 @@ html.product-scroll-page #root {
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
-}
-
-.aesthetic-source-card {
-  opacity: 0.82;
-  transform: translate(-50%, -50%) rotate(var(--source-rotation));
-}
-
-.aesthetic-source-card:nth-child(1) {
-  inset-block-start: 23%;
-  inset-inline-start: 22%;
-  --source-rotation: -9deg;
-}
-
-.aesthetic-source-card:nth-child(2) {
-  inset-block-start: 18%;
-  inset-inline-start: 50%;
-  --source-rotation: 4deg;
-}
-
-.aesthetic-source-card:nth-child(3) {
-  inset-block-start: 27%;
-  inset-inline-start: 78%;
-  --source-rotation: 10deg;
-}
-
-.aesthetic-source-card:nth-child(4) {
-  inset-block-start: 76%;
-  inset-inline-start: 22%;
-  --source-rotation: 8deg;
-}
-
-.aesthetic-source-card:nth-child(5) {
-  inset-block-start: 80%;
-  inset-inline-start: 52%;
-  --source-rotation: -4deg;
-}
-
-.aesthetic-source-card:nth-child(6) {
-  inset-block-start: 73%;
-  inset-inline-start: 79%;
-  --source-rotation: -10deg;
 }
 
 .aesthetic-trail-item {
@@ -408,40 +365,6 @@ html.product-scroll-page #root {
 
   .aesthetic-trail-card {
     inline-size: clamp(6.4rem, 31vw, 9.25rem);
-  }
-
-  .aesthetic-source-card {
-    opacity: 0.78;
-  }
-
-  .aesthetic-source-card:nth-child(1) {
-    inset-block-start: 19%;
-    inset-inline-start: 21%;
-  }
-
-  .aesthetic-source-card:nth-child(2) {
-    inset-block-start: 16%;
-    inset-inline-start: 50%;
-  }
-
-  .aesthetic-source-card:nth-child(3) {
-    inset-block-start: 20%;
-    inset-inline-start: 79%;
-  }
-
-  .aesthetic-source-card:nth-child(4) {
-    inset-block-start: 79%;
-    inset-inline-start: 19%;
-  }
-
-  .aesthetic-source-card:nth-child(5) {
-    inset-block-start: 82%;
-    inset-inline-start: 50%;
-  }
-
-  .aesthetic-source-card:nth-child(6) {
-    inset-block-start: 79%;
-    inset-inline-start: 80%;
   }
 
   .aesthetic-copy {

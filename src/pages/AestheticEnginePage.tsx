@@ -90,7 +90,7 @@ export function AestheticEnginePage() {
       x,
       y,
       rotation: ((id % 5) - 2) * 5,
-      scale: 0.96 + (id % 3) * 0.03,
+      scale: 1,
     };
 
     setTrailItems((current) => [...current.slice(-(MAX_TRAIL_ITEMS - 1)), item]);
@@ -115,20 +115,6 @@ export function AestheticEnginePage() {
           onMouseMove={(event) => spawnTrailItem(event.clientX, event.clientY)}
         >
           <div className="aesthetic-engine-grid" aria-hidden="true" />
-
-          <div className="aesthetic-source-layer" aria-hidden="true">
-            {TRAIL_ASSETS.map((asset, index) => (
-              <figure
-                className="aesthetic-trail-card aesthetic-source-card"
-                data-aesthetic-source-card
-                data-card-ratio="2:3"
-                key={asset.src}
-                style={{ '--card-index': index } as CSSProperties}
-              >
-                <img alt="" src={asset.src} />
-              </figure>
-            ))}
-          </div>
 
           <div className="aesthetic-copy">
             <p className="aesthetic-eyebrow">AESTHETIC ENGINE / PRIVATE BETA</p>

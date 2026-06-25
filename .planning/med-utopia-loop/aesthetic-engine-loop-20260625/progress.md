@@ -91,3 +91,21 @@
   - `node scripts/validate-design-tokens.mjs` passed.
   - `pnpm build` passed.
 - Loop state marked completed after clean verification; this final state update is recorded separately from the feature commit.
+
+## 2026-06-25 · Post-completion correction PASS
+
+- 用户指出 `/aesthetic-engine` 初始静止状态仍显示图片，最新要求优先于旧 T07 PASS 记录。
+- 已重新生成并确认最小行为预览：Idle 状态只显示中间“敬请期待”，不显示图片；Mouse Move 状态才出现统一 2:3 图片轨迹；Light/Dark 继续沿用同一语义色体系。
+- RED：`pnpm vitest run src/pages/AestheticEnginePage.test.tsx` 失败，原因符合预期：初始渲染仍存在 `data-aesthetic-source-card`，`main img` 非 0。
+- 修正：删除初始可见 `aesthetic-source-layer` 和相关源卡片定位样式；拖尾图片只在鼠标移动后生成。
+- RED：同一 focused 测试再次失败，原因符合预期：拖尾项 `--trail-scale` 为 `0.96`，不符合统一尺寸要求。
+- 修正：拖尾项 CSS 缩放固定为 `1`，保留固定 2:3 布局、`object-fit: cover` 和轻微旋转。
+- GREEN：`pnpm vitest run src/pages/AestheticEnginePage.test.tsx` 通过，1 个测试文件、4/4 通过。
+- 浏览器 QA 使用本地 Chrome 调试协议覆盖桌面 `1280×720`、移动 `390×844`、Light/Dark 和 reduced-motion dark；结果写入 `docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/browser-qa.json`。
+- 浏览器指标确认：初始静止态 `mainImages=0`、`sourceCards=0`、`trailItems=0`；鼠标移动后桌面拖尾统一约 `166×250`，移动端统一约 `121×181`；`scale=1`；reduced-motion 下仍不生成拖尾。
+- 最终自动化检查：
+  - `pnpm test` 通过：19 个测试文件，140/140 测试。
+  - `node --test scripts/validate-design-tokens.node.mjs` 通过：3/3 测试。
+  - `node scripts/validate-design-tokens.mjs` 通过。
+  - `pnpm build` 通过。
+  - `git diff --check` 通过。

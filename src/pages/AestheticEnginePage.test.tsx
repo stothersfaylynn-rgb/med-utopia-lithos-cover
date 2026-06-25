@@ -54,25 +54,12 @@ describe('AestheticEnginePage', () => {
     expect(host.textContent).not.toContain('开始重构');
   });
 
-  it('keeps all theme assets in the fixed 2:3 trail-card system', () => {
+  it('keeps the idle state free of visible image cards', () => {
     renderPage();
 
-    const sourceCards = host.querySelectorAll<HTMLElement>('[data-aesthetic-source-card]');
-
-    expect(sourceCards).toHaveLength(6);
-    expect(
-      Array.from(sourceCards).every((card) => card.dataset.cardRatio === '2:3'),
-    ).toBe(true);
-    expect(
-      Array.from(sourceCards).map((card) => card.querySelector('img')?.getAttribute('src')),
-    ).toEqual([
-      '/aesthetic-engine/report-reconstruction.png',
-      '/aesthetic-engine/presentation-reconstruction.png',
-      '/aesthetic-engine/poster-grid.png',
-      '/aesthetic-engine/evidence-matrix.png',
-      '/aesthetic-engine/decision-path.png',
-      '/aesthetic-engine/dossier-cover.png',
-    ]);
+    expect(host.querySelector('[data-aesthetic-source-card]')).toBeNull();
+    expect(host.querySelector('[data-aesthetic-trail-item]')).toBeNull();
+    expect(host.querySelector('main img')).toBeNull();
   });
 
   it('spawns bounded fixed-frame image trail items from pointer movement', () => {
@@ -92,6 +79,7 @@ describe('AestheticEnginePage', () => {
     expect(trailItem?.dataset.cardRatio).toBe('2:3');
     expect(trailItem?.style.getPropertyValue('--trail-x')).toBe('320px');
     expect(trailItem?.style.getPropertyValue('--trail-y')).toBe('220px');
+    expect(trailItem?.style.getPropertyValue('--trail-scale')).toBe('1');
     expect(trailItem?.querySelector('img')?.getAttribute('src')).toContain('/aesthetic-engine/');
   });
 

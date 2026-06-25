@@ -1,400 +1,239 @@
 {
-  "generatedAt": "2026-06-25T03:35:52.646Z",
+  "generatedAt": "2026-06-25T06:17:46.051Z",
   "results": [
     {
       "name": "aesthetic-desktop-light",
-      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-desktop-light.png",
-      "consoleMessages": [],
-      "metrics": {
-        "h1Count": 1,
-        "h1": "敬请期待",
-        "sourceCount": 6,
-        "trailCount": 7,
-        "sourceLayout": [
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          }
-        ],
-        "trailLayout": [
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          }
-        ],
-        "trailVisualBounds": [
-          {
-            "width": 186,
-            "height": 247
-          },
-          {
-            "width": 169,
-            "height": 237
-          },
-          {
-            "width": 150,
-            "height": 225
-          },
-          {
-            "width": 169,
-            "height": 237
-          },
-          {
-            "width": 188,
-            "height": 249
-          },
-          {
-            "width": 192,
-            "height": 254
-          },
-          {
-            "width": 175,
-            "height": 245
-          }
-        ],
-        "hasFileInput": false,
-        "hasMainForm": false,
-        "hasGenerateText": false,
-        "horizontalOverflow": false,
-        "applyHeight": 44,
-        "applyWidth": 152,
+      "width": 1280,
+      "height": 720,
+      "theme": "light",
+      "reducedMotion": false,
+      "idle": {
         "theme": "light",
-        "reducedMotion": false
-      }
+        "h1Count": 1,
+        "h1Text": "敬请期待",
+        "mainImages": 0,
+        "sourceCards": 0,
+        "trailItems": 0,
+        "uploadControls": 0,
+        "horizontalOverflow": false
+      },
+      "afterMove": {
+        "trailItems": 3,
+        "sourceCards": 0,
+        "mainImages": 3,
+        "rects": [
+          {
+            "layoutWidth": 166,
+            "layoutHeight": 250,
+            "layoutRatio": 0.664,
+            "scale": "1",
+            "src": "/aesthetic-engine/report-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "166.391px"
+          },
+          {
+            "layoutWidth": 166,
+            "layoutHeight": 250,
+            "layoutRatio": 0.664,
+            "scale": "1",
+            "src": "/aesthetic-engine/presentation-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "166.391px"
+          },
+          {
+            "layoutWidth": 166,
+            "layoutHeight": 250,
+            "layoutRatio": 0.664,
+            "scale": "1",
+            "src": "/aesthetic-engine/poster-grid.png",
+            "objectFit": "cover",
+            "inlineSize": "166.391px"
+          }
+        ],
+        "allFixedRatio": true,
+        "allSameSize": true,
+        "allScaleOne": true,
+        "allCover": true
+      },
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-desktop-light.png"
     },
     {
       "name": "aesthetic-desktop-dark",
-      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-desktop-dark.png",
-      "consoleMessages": [],
-      "metrics": {
-        "h1Count": 1,
-        "h1": "敬请期待",
-        "sourceCount": 6,
-        "trailCount": 7,
-        "sourceLayout": [
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          }
-        ],
-        "trailLayout": [
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          }
-        ],
-        "trailVisualBounds": [
-          {
-            "width": 186,
-            "height": 247
-          },
-          {
-            "width": 169,
-            "height": 237
-          },
-          {
-            "width": 150,
-            "height": 225
-          },
-          {
-            "width": 169,
-            "height": 237
-          },
-          {
-            "width": 188,
-            "height": 249
-          },
-          {
-            "width": 192,
-            "height": 254
-          },
-          {
-            "width": 175,
-            "height": 245
-          }
-        ],
-        "hasFileInput": false,
-        "hasMainForm": false,
-        "hasGenerateText": false,
-        "horizontalOverflow": false,
-        "applyHeight": 44,
-        "applyWidth": 152,
+      "width": 1280,
+      "height": 720,
+      "theme": "dark",
+      "reducedMotion": false,
+      "idle": {
         "theme": "dark",
-        "reducedMotion": false
-      }
+        "h1Count": 1,
+        "h1Text": "敬请期待",
+        "mainImages": 0,
+        "sourceCards": 0,
+        "trailItems": 0,
+        "uploadControls": 0,
+        "horizontalOverflow": false
+      },
+      "afterMove": {
+        "trailItems": 3,
+        "sourceCards": 0,
+        "mainImages": 3,
+        "rects": [
+          {
+            "layoutWidth": 166,
+            "layoutHeight": 250,
+            "layoutRatio": 0.664,
+            "scale": "1",
+            "src": "/aesthetic-engine/report-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "166.391px"
+          },
+          {
+            "layoutWidth": 166,
+            "layoutHeight": 250,
+            "layoutRatio": 0.664,
+            "scale": "1",
+            "src": "/aesthetic-engine/presentation-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "166.391px"
+          },
+          {
+            "layoutWidth": 166,
+            "layoutHeight": 250,
+            "layoutRatio": 0.664,
+            "scale": "1",
+            "src": "/aesthetic-engine/poster-grid.png",
+            "objectFit": "cover",
+            "inlineSize": "166.391px"
+          }
+        ],
+        "allFixedRatio": true,
+        "allSameSize": true,
+        "allScaleOne": true,
+        "allCover": true
+      },
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-desktop-dark.png"
     },
     {
       "name": "aesthetic-mobile-light",
-      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-mobile-light.png",
-      "consoleMessages": [],
-      "metrics": {
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "reducedMotion": false,
+      "idle": {
+        "theme": "light",
         "h1Count": 1,
-        "h1": "敬请期待",
-        "sourceCount": 6,
-        "trailCount": 0,
-        "sourceLayout": [
+        "h1Text": "敬请期待",
+        "mainImages": 0,
+        "sourceCards": 0,
+        "trailItems": 0,
+        "uploadControls": 0,
+        "horizontalOverflow": false
+      },
+      "afterMove": {
+        "trailItems": 2,
+        "sourceCards": 0,
+        "mainImages": 2,
+        "rects": [
           {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
+            "layoutWidth": 121,
+            "layoutHeight": 181,
+            "layoutRatio": 0.669,
+            "scale": "1",
+            "src": "/aesthetic-engine/report-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "120.891px"
           },
           {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
+            "layoutWidth": 121,
+            "layoutHeight": 181,
+            "layoutRatio": 0.669,
+            "scale": "1",
+            "src": "/aesthetic-engine/presentation-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "120.891px"
           }
         ],
-        "trailLayout": [],
-        "trailVisualBounds": [],
-        "hasFileInput": false,
-        "hasMainForm": false,
-        "hasGenerateText": false,
-        "horizontalOverflow": false,
-        "applyHeight": 44,
-        "applyWidth": 152,
-        "theme": "light",
-        "reducedMotion": false
-      }
+        "allFixedRatio": true,
+        "allSameSize": true,
+        "allScaleOne": true,
+        "allCover": true
+      },
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-mobile-light.png"
     },
     {
       "name": "aesthetic-mobile-dark",
-      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-mobile-dark.png",
-      "consoleMessages": [],
-      "metrics": {
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "reducedMotion": false,
+      "idle": {
+        "theme": "dark",
         "h1Count": 1,
-        "h1": "敬请期待",
-        "sourceCount": 6,
-        "trailCount": 0,
-        "sourceLayout": [
+        "h1Text": "敬请期待",
+        "mainImages": 0,
+        "sourceCards": 0,
+        "trailItems": 0,
+        "uploadControls": 0,
+        "horizontalOverflow": false
+      },
+      "afterMove": {
+        "trailItems": 2,
+        "sourceCards": 0,
+        "mainImages": 2,
+        "rects": [
           {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
+            "layoutWidth": 121,
+            "layoutHeight": 181,
+            "layoutRatio": 0.669,
+            "scale": "1",
+            "src": "/aesthetic-engine/report-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "120.891px"
           },
           {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
-          },
-          {
-            "offsetWidth": 121,
-            "offsetHeight": 181,
-            "ratio": 1.5
+            "layoutWidth": 121,
+            "layoutHeight": 181,
+            "layoutRatio": 0.669,
+            "scale": "1",
+            "src": "/aesthetic-engine/presentation-reconstruction.png",
+            "objectFit": "cover",
+            "inlineSize": "120.891px"
           }
         ],
-        "trailLayout": [],
-        "trailVisualBounds": [],
-        "hasFileInput": false,
-        "hasMainForm": false,
-        "hasGenerateText": false,
-        "horizontalOverflow": false,
-        "applyHeight": 44,
-        "applyWidth": 152,
-        "theme": "dark",
-        "reducedMotion": false
-      }
+        "allFixedRatio": true,
+        "allSameSize": true,
+        "allScaleOne": true,
+        "allCover": true
+      },
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-mobile-dark.png"
     },
     {
       "name": "aesthetic-reduced-motion-dark",
-      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-reduced-motion-dark.png",
-      "consoleMessages": [],
-      "metrics": {
-        "h1Count": 1,
-        "h1": "敬请期待",
-        "sourceCount": 6,
-        "trailCount": 0,
-        "sourceLayout": [
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          },
-          {
-            "offsetWidth": 166,
-            "offsetHeight": 250,
-            "ratio": 1.51
-          }
-        ],
-        "trailLayout": [],
-        "trailVisualBounds": [],
-        "hasFileInput": false,
-        "hasMainForm": false,
-        "hasGenerateText": false,
-        "horizontalOverflow": false,
-        "applyHeight": 44,
-        "applyWidth": 152,
+      "width": 1280,
+      "height": 720,
+      "theme": "dark",
+      "reducedMotion": true,
+      "idle": {
         "theme": "dark",
-        "reducedMotion": true
-      }
+        "h1Count": 1,
+        "h1Text": "敬请期待",
+        "mainImages": 0,
+        "sourceCards": 0,
+        "trailItems": 0,
+        "uploadControls": 0,
+        "horizontalOverflow": false
+      },
+      "afterMove": {
+        "trailItems": 0,
+        "sourceCards": 0,
+        "mainImages": 0,
+        "rects": [],
+        "allFixedRatio": true,
+        "allSameSize": true,
+        "allScaleOne": true,
+        "allCover": true
+      },
+      "screenshotPath": "/Users/eliyah/Documents/理想国/docs/superpowers/evidence/2026-06-25-aesthetic-engine-loop/aesthetic-reduced-motion-dark.png"
     }
   ]
 }
