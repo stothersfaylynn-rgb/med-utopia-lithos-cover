@@ -1,0 +1,50 @@
+name: Deploy Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - codex/work-gallery-final
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.7.0 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Validate design tokens
+        run: |
+          node --test scripts/validate-design-tokens.node.mjs
+          node scripts/validate-design-tokens.mjs
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ce8252d67fbf479d9b9e1d5812402efb
+          wranglerVersion: "4"
+          command: pages deploy dist --project-name=med-utopia --branch=${{ github.ref_name }}
