@@ -43,11 +43,17 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy preview to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != ''
         env:
           CLOUDFLARE_ACCOUNT_ID: ce8252d67fbf479d9b9e1d5812402efb
         run: npx --yes wrangler@4 pages deploy "$GITHUB_WORKSPACE/dist" --project-name=med-utopia --branch="${{ github.ref_name }}"
+
+      - name: Deploy production to Cloudflare Pages
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ce8252d67fbf479d9b9e1d5812402efb
+        run: npx --yes wrangler@4 pages deploy "$GITHUB_WORKSPACE/dist" --project-name=med-utopia --branch=main
 
       - name: Cloudflare token not configured
         if: env.CLOUDFLARE_API_TOKEN == ''
