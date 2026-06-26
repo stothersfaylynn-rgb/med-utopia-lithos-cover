@@ -61,6 +61,8 @@ export function ApplyPage({ search }: { search: string }) {
           : initialValues.modules,
   }));
   const [errors, setErrors] = useState<ApplyErrors>({});
+  const [submitError, setSubmitError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const field = event.currentTarget.name as TextField;
@@ -78,10 +80,11 @@ export function ApplyPage({ search }: { search: string }) {
     }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors = validateApply(values);
     setErrors(nextErrors);
+    setSubmitError('');
 
     const firstError = Object.keys(nextErrors)[0] as keyof ApplyValues | undefined;
     if (firstError) {
@@ -97,7 +100,30 @@ export function ApplyPage({ search }: { search: string }) {
     if (context.challengeSlug) query.set('challenge', context.challengeSlug);
     if (context.expertSlug) query.set('expert', context.expertSlug);
     if (context.module) query.set('module', context.module);
-    navigate(`/apply?${query.toString()}`);
+
+    setSubmitting(true);
+    try {
+      const response = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          identity: values.identity.trim(),
+          school: values.school.trim(),
+          specialty: values.specialty.trim(),
+          phone: values.phone.trim(),
+          modules: values.modules,
+          consent: values.consent,
+          context,
+        }),
+      });
+
+      if (!response.ok) throw new Error('apply submission failed');
+      navigate(`/apply?${query.toString()}`);
+    } catch {
+      setSubmitError('提交暂时失败，请稍后重试。');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (success) {
@@ -299,8 +325,11 @@ export function ApplyPage({ search }: { search: string }) {
           </div>
 
           <footer className="apply-form-actions">
+            {submitError ? <p role="alert">{submitError}</p> : null}
             <p>提交不会创建账号，也不会上传或保存医学资料。</p>
-            <button type="submit">提交申请</button>
+            <button disabled={submitting} type="submit">
+              {submitting ? '提交中...' : '提交申请'}
+            </button>
           </footer>
         </form>
       </main>

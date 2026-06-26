@@ -41,6 +41,10 @@ describe('Med-Utopia cover', () => {
     installMatchMedia({ reducedMotion: false, coarsePointer: false });
     vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1));
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve(new Response(JSON.stringify({ ok: true }), { status: 200 }))),
+    );
     window.history.pushState(null, '', '/');
     Object.defineProperty(window, 'scrollY', {
       configurable: true,
@@ -178,7 +182,7 @@ describe('Med-Utopia cover', () => {
     expect(container.textContent).toContain('申请内测');
   });
 
-  it('completes home to case application success without deferred features', () => {
+  it('completes home to case application success without deferred features', async () => {
     renderApp('/');
 
     clickLink('/cases');
@@ -199,12 +203,14 @@ describe('Med-Utopia cover', () => {
     changeControl('input[name="specialty"]', '急诊医学');
     changeControl('input[name="phone"]', '13800000000');
     act(() => container.querySelector<HTMLInputElement>('input[name="consent"]')?.click());
-    act(() => {
+    await act(async () => {
       container
         .querySelector('form')
         ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      await Promise.resolve();
     });
 
+    expect(fetch).toHaveBeenCalledTimes(1);
     expect(`${window.location.pathname}${window.location.search}`).toBe(
       '/apply?status=success&source=case-detail&type=contributor&case=acute-aortic-dissection-triage',
     );

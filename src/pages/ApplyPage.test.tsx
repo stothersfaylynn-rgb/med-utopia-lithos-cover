@@ -15,7 +15,10 @@ describe('ApplyPage', () => {
   beforeEach(() => {
     localStorage.clear();
     vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
-    vi.stubGlobal('fetch', vi.fn());
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve(new Response(JSON.stringify({ ok: true }), { status: 200 }))),
+    );
     host = document.createElement('div');
     document.body.appendChild(host);
     root = createRoot(host);
@@ -50,6 +53,25 @@ describe('ApplyPage', () => {
       control.dispatchEvent(
         new Event(control instanceof HTMLSelectElement ? 'change' : 'input', { bubbles: true }),
       );
+    });
+  }
+
+  function fillValidApplication(phone = '13800000000') {
+    changeControl('select[name="identity"]', '临床医生');
+    changeControl('input[name="school"]', '理想医学院');
+    changeControl('input[name="specialty"]', '急诊医学');
+    changeControl('input[name="phone"]', phone);
+
+    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
+    act(() => consent?.click());
+  }
+
+  async function submitApplication() {
+    await act(async () => {
+      host
+        .querySelector('form')
+        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      await Promise.resolve();
     });
   }
 
@@ -154,27 +176,57 @@ describe('ApplyPage', () => {
     expect(document.activeElement).toBe(identity);
   });
 
-  it('submits valid values without a network request and preserves context', () => {
+  it('submits valid values to the collection endpoint and preserves context', async () => {
     renderApply('?source=case-detail&type=contributor&case=acute-aortic-dissection-triage');
 
-    changeControl('select[name="identity"]', '临床医生');
-    changeControl('input[name="school"]', '理想医学院');
-    changeControl('input[name="specialty"]', '急诊医学');
-    changeControl('input[name="phone"]', '13800000000');
+    fillValidApplication();
+    await submitApplication();
 
-    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
-    act(() => consent?.click());
-    act(() => {
-      host
-        .querySelector('form')
-        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-    });
-
-    expect(fetch).not.toHaveBeenCalled();
+    expect(fetch).toHaveBeenCalledWith(
+      '/api/apply',
+      expect.objectContaining({
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          identity: '临床医生',
+          school: '理想医学院',
+          specialty: '急诊医学',
+          phone: '13800000000',
+          modules: ['避雷案例'],
+          consent: true,
+          context: {
+            source: 'case-detail',
+            type: 'contributor',
+            caseSlug: 'acute-aortic-dissection-triage',
+            challengeSlug: null,
+            expertSlug: null,
+            module: null,
+          },
+        }),
+      }),
+    );
     expect(`${window.location.pathname}${window.location.search}`).toBe(
       '/apply?status=success&source=case-detail&type=contributor&case=acute-aortic-dissection-triage',
     );
     expect(host.textContent).toContain('申请已提交');
+  });
+
+  it('stays on the form and announces when the collection endpoint fails', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(
+      new Response(JSON.stringify({ error: 'unavailable' }), { status: 503 }),
+    );
+    renderApply('?source=case-detail&type=contributor&case=acute-aortic-dissection-triage');
+
+    fillValidApplication();
+    await submitApplication();
+
+    expect(`${window.location.pathname}${window.location.search}`).toBe(
+      '/apply?source=case-detail&type=contributor&case=acute-aortic-dissection-triage',
+    );
+    expect(host.querySelector('form')).not.toBeNull();
+    expect(host.querySelector('[role="alert"]')?.textContent).toContain(
+      '提交暂时失败，请稍后重试',
+    );
   });
 
   it('renders a deterministic success state', () => {
@@ -187,25 +239,15 @@ describe('ApplyPage', () => {
     expect(host.querySelector('form')).toBeNull();
   });
 
-  it('preserves challenge context through submission and returns to challenges', () => {
+  it('preserves challenge context through submission and returns to challenges', async () => {
     renderApply(
       '?source=challenge-detail&type=challenge&challenge=triage-reasoning-aortic-dissection',
     );
 
-    changeControl('select[name="identity"]', '临床医生');
-    changeControl('input[name="school"]', '理想医学院');
-    changeControl('input[name="specialty"]', '急诊医学');
-    changeControl('input[name="phone"]', '13800000000');
+    fillValidApplication();
+    await submitApplication();
 
-    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
-    act(() => consent?.click());
-    act(() => {
-      host
-        .querySelector('form')
-        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-    });
-
-    expect(fetch).not.toHaveBeenCalled();
+    expect(fetch).toHaveBeenCalledTimes(1);
     expect(`${window.location.pathname}${window.location.search}`).toBe(
       '/apply?status=success&source=challenge-detail&type=challenge&challenge=triage-reasoning-aortic-dissection',
     );
@@ -213,23 +255,13 @@ describe('ApplyPage', () => {
     expect(host.textContent).toContain('继续浏览挑战');
   });
 
-  it('preserves expert context through submission and returns to curators', () => {
+  it('preserves expert context through submission and returns to curators', async () => {
     renderApply('?source=curators&type=curation&expert=zhou-heng');
 
-    changeControl('select[name="identity"]', '临床医生');
-    changeControl('input[name="school"]', '理想医学院');
-    changeControl('input[name="specialty"]', '急诊医学');
-    changeControl('input[name="phone"]', '13800000000');
+    fillValidApplication();
+    await submitApplication();
 
-    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
-    act(() => consent?.click());
-    act(() => {
-      host
-        .querySelector('form')
-        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-    });
-
-    expect(fetch).not.toHaveBeenCalled();
+    expect(fetch).toHaveBeenCalledTimes(1);
     expect(`${window.location.pathname}${window.location.search}`).toBe(
       '/apply?status=success&source=curators&type=curation&expert=zhou-heng',
     );
@@ -237,23 +269,14 @@ describe('ApplyPage', () => {
     expect(host.textContent).toContain('继续浏览策展');
   });
 
-  it('preserves aesthetic-engine module context through submission and returns to the preview', () => {
+  it('preserves aesthetic-engine module context through submission and returns to the preview', async () => {
     renderApply('?module=aesthetic-engine');
 
-    changeControl('select[name="identity"]', '临床医生');
-    changeControl('input[name="school"]', '理想医学院');
+    fillValidApplication();
     changeControl('input[name="specialty"]', '医学汇报设计');
-    changeControl('input[name="phone"]', '13800000000');
+    await submitApplication();
 
-    const consent = host.querySelector<HTMLInputElement>('input[name="consent"]');
-    act(() => consent?.click());
-    act(() => {
-      host
-        .querySelector('form')
-        ?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-    });
-
-    expect(fetch).not.toHaveBeenCalled();
+    expect(fetch).toHaveBeenCalledTimes(1);
     expect(`${window.location.pathname}${window.location.search}`).toBe(
       '/apply?status=success&module=aesthetic-engine',
     );
